@@ -1,11 +1,76 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
+    <title>Contact</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        body {
+            overflow: hidden; /* Úplně zakáže scrollování na této stránce */
+        }
+        main {
+            height: calc(100vh - 75px); /* Přesná výška obrazovky mínus hlavička */
+            padding: 0 5% !important; /* Odstraní původní velký padding, co dělal scrollbar */
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        .contact-container {
+            width: 100%;
+        }
+    </style>
 </head>
+
 <body>
-    
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <img src="OK.png" alt="OK Logo" class="logo" id="brand-logo">
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="about.html">About Me</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="contact.html" class="active">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <h1>Get In Touch</h1>
+
+        <div class="contact-container interactive-element">
+            <p style="font-size: 1.1rem; color: #555;">
+                Where you can find me:
+            </p>
+
+            <div class="contact-links">
+                <a href="mailto:pelcsamuel464@gmail.com" class="contact-link">
+                    <i class="fa-solid fa-envelope"></i>
+                    pelcsamuel464@gmail.com
+                </a>
+                <a href="tel:+420773529949" class="contact-link">
+                    <i class="fa-solid fa-phone"></i>
+                    +420 773 529 949
+                </a>
+                <a href="https://www.instagram.com/opikula28/" target="_blank" class="contact-link red-accent">
+                    <i class="fa-brands fa-instagram"></i>
+                    opikula28
+                </a>
+                <a href="https://www.youtube.com/@OpiKula" target="_blank" class="contact-link">
+                    <i class="fa-brands fa-youtube"></i>
+                    OpiKula
+                </a>
+            </div>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
 </body>
+
 </html>

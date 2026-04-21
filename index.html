@@ -1,17 +1,42 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>OpiKula - About me</title>
-  <link rel="stylesheet" href="style.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="icon" type="image/png" href="ok.png">
 </head>
+
 <body>
-<header>
-  <img src="OK.png" alt="Logo OpiKula" class="logo">
-  <a href="/">About Me</a>
-  <a href="/Notebook">Notebook</a>
-  <a href="Contact.html">Contact</a>
-</header>
+
+    <header>
+        <a href="index.html" class="logo-container">
+            <img src="OK.png" alt="OK Logo" class="logo" id="brand-logo">
+        </a>
+        <nav>
+            <ul class="nav-links">
+                <li><a href="index.html" class="active">Home</a></li>
+                <li><a href="about.html">About Me</a></li>
+                <li><a href="projects.html">Projects</a></li>
+                <li><a href="contact.html">Contact</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <main>
+        <div
+            style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center;">
+            <h1 class="interactive-element">Home</h1>
+            <p style="font-size: 1.2rem; max-width: 600px; margin-bottom: 2rem;">
+                This is my website for info about me, my notes and projects.
+            </p>
+        </div>
+    </main>
+
+    <script src="script.js"></script>
 </body>
+
 </html>
