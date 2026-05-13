@@ -285,3 +285,26 @@ h2 {
     color: var(--accent-blue);
     font-weight: 600;
 }
+
+.project-block {
+    display: inline-block;
+    text-decoration: none;
+    color: inherit;
+    border: 2px solid #ccc;
+    border-radius: 10px;
+    padding: 20px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    background-color: #f9f9f9;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.project-block:hover {
+    transform: scale(1.1);
+    box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.block-content h2 {
+    margin: 0;
+    font-size: 1.5rem;
+    text-align: center;
+}
