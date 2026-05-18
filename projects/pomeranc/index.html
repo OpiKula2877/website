@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="A modern, interactive website about oranges, covering flavor, cultivation, nutrition, and practical growing guidance for enthusiasts and farmers.">
+  <meta name="keywords" content="oranges, citrus, orange farming, orange nutrition, citrus facts, orange varieties, orange harvest">
+  <meta name="theme-color" content="#f28c18">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Orange Atlas">
+  <meta property="og:description" content="Discover the world of oranges through a bright, interactive single-page experience for growers and enthusiasts.">
+  <meta property="og:url" content="https://example.com/orange-atlas">
+  <meta property="og:image" content="1pomeranc.png">
+  <meta property="og:image:alt" content="Detailed close-up of a vibrant orange with rich textured peel and glistening juicy segments">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Orange Atlas">
+  <meta name="twitter:description" content="An interactive guide to oranges, from orchard care to flavor and nutrition.">
+  <meta name="twitter:image" content="1pomeranc.png">
+  <link rel="icon" href="pomeranc.ico" type="image/x-icon">
+  <title>Orange Atlas</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="script.js" defer></script>
+  <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "Orange Atlas",
+      "url": "https://example.com/orange-atlas",
+      "description": "An informational site about oranges, including cultivation notes, nutrition, flavor profiles, and care guidance.",
+      "about": {
+        "@type": "Thing",
+        "name": "Oranges"
+      }
+    }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main-content">Skip to main content</a>
+
+  <header class="site-header" id="top">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Orange Atlas home">
+        <span><img src="pomeranc.ico" alt=""></span>
+        <span class="brand-text">About Oranges</span>
+      </a>
+
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open menu">
+        <span class="menu-lines" aria-hidden="true"></span>
+      </button>
+
+      <div><a class="back-button" href="../../projects.html">ZPĚT</a></div>
+      <nav class="site-nav" id="primary-navigation" aria-label="Primary navigation">
+        <ul>
+          <li><a href="#hero">Home</a></li>
+          <li><a href="#features">Highlights</a></li>
+          <li><a href="#facts">Facts</a></li>
+          <li><a href="#gallery">Gallery</a></li>
+          <li><a href="#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
+
+  <main id="main-content">
+    <section class="hero section" id="hero">
+      <div class="container hero-grid reveal">
+        <div class="hero-copy">
+          <p class="eyebrow">Citrus knowledge for growers and enthusiasts</p>
+          <h1>The orange, explained with clarity, flavor, and orchard insight.</h1>
+          <p class="lead">From sunlit groves to kitchen tables, this page explores what makes oranges a standout fruit: bright aroma, resilient cultivation, nutrition-rich flesh, and a long seasonal story worth celebrating.</p>
+          <div class="hero-actions">
+            <a class="button button-primary" href="#facts">Explore facts</a>
+            <a class="button button-secondary" href="#contact">Talk oranges</a>
+          </div>
+          <ul class="hero-stats" aria-label="Orange overview highlights">
+            <li><strong>1 fruit</strong><span>Iconic, versatile, and globally loved</span></li>
+            <li><strong>3 uses</strong><span>Fresh eating, juice, and culinary zest</span></li>
+            <li><strong>Seasonal</strong><span>Best enjoyed when color and aroma peak</span></li>
+          </ul>
+        </div>
+
+        <div class="hero-visual">
+          <figure class="feature-card large-card">
+            <img src="1pomeranc.png" alt="Detailed close-up of a fresh orange cut open to reveal glossy juice vesicles, a vivid sunlit rind, and the rich texture of a perfectly ripe citrus fruit" loading="lazy">
+            <figcaption>Bright pulp, fragrant peel, and the kind of freshness that defines a good harvest.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Why oranges stand out</p>
+          <h2>Three qualities that make oranges easy to admire and useful to grow.</h2>
+        </div>
+
+        <div class="cards-grid">
+          <article class="info-card reveal">
+            <img src="2pomeranc.png" alt="A richly colored orange resting on a clean surface, emphasizing the smooth natural peel and the fruit's bright, inviting presence" loading="lazy">
+            <h3>Flavor balance</h3>
+            <p>Oranges deliver a precise mix of sweetness and acidity that feels refreshing in every bite. That balance also makes them reliable in juices, salads, desserts, and glazes.</p>
+          </article>
+
+          <article class="info-card reveal">
+            <img src="3pomeranc.png" alt="A fresh orange with a textured peel and natural highlights, illustrating the sturdy exterior that protects juicy segments inside" loading="lazy">
+            <h3>Farm value</h3>
+            <p>For growers, oranges reward patient care with strong market demand. Tree health, water management, and harvest timing shape quality more than any single trick ever could.</p>
+          </article>
+
+          <article class="info-card reveal">
+            <img src="4pomeranc.png" alt="A sliced orange displaying radiant segments and vivid color contrast, showcasing the fruit's clean structure and high visual appeal" loading="lazy">
+            <h3>Everyday versatility</h3>
+            <p>Oranges fit into breakfast routines, savory cooking, and post-work snacks. Their aroma, zest, and juice make them one of the most adaptable fruits in the kitchen.</p>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section soft-panel" id="facts">
+      <div class="container facts-grid">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Orange facts</p>
+          <h2>Interactive notes on ripening, nutrition, and cultivation.</h2>
+          <p>Tap each item to open the details. The content is written for quick scanning and deeper reading.</p>
+        </div>
+
+        <div class="accordion reveal" data-accordion>
+          <button class="accordion-trigger" type="button" aria-expanded="false">
+            <span>How do you know an orange is ready?</span>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </button>
+          <div class="accordion-panel" hidden>
+            <p>Color alone is not the full story. A ripe orange usually feels dense for its size, smells bright near the stem, and has a peel that releases citrus oils when gently pressed. Texture, weight, and season often tell the story better than the exact shade of the skin.</p>
+          </div>
+
+          <button class="accordion-trigger" type="button" aria-expanded="false">
+            <span>What makes oranges so useful nutritionally?</span>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </button>
+          <div class="accordion-panel" hidden>
+            <p>Oranges are valued for vitamin C, hydration, and naturally occurring plant compounds that support a balanced diet. They are easy to include in breakfasts, snacks, and simple recipes without requiring much preparation.</p>
+          </div>
+
+          <button class="accordion-trigger" type="button" aria-expanded="false">
+            <span>Which orchard conditions matter most?</span>
+            <span class="accordion-icon" aria-hidden="true"></span>
+          </button>
+          <div class="accordion-panel" hidden>
+            <p>Consistent sunlight, well-managed irrigation, soil health, and pest monitoring matter most. Strong trees depend on seasonal care, steady pruning, and careful harvesting practices that protect fruit quality from field to basket.</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="gallery">
+      <div class="container gallery-shell">
+        <div class="section-heading reveal">
+          <p class="eyebrow">Interactive gallery</p>
+          <h2>Switch between orange perspectives and compare the details.</h2>
+        </div>
+
+        <div class="gallery-controls reveal" role="tablist" aria-label="Orange gallery views">
+          <button class="gallery-tab is-active" type="button" role="tab" aria-selected="true" data-gallery-target="closeup">Close-up</button>
+          <button class="gallery-tab" type="button" role="tab" aria-selected="false" data-gallery-target="orchard">Orchard</button>
+          <button class="gallery-tab" type="button" role="tab" aria-selected="false" data-gallery-target="table">Table</button>
+        </div>
+
+        <div class="gallery-panels reveal">
+          <figure class="gallery-panel is-active" data-gallery-panel="closeup">
+            <img src="5pomeranc.png" alt="Detailed close-up of orange flesh with luminous segment walls, natural moisture, and a clean cut surface that highlights freshness" loading="lazy">
+            <figcaption>Close-up texture reveals the fruit's juice-rich structure.</figcaption>
+          </figure>
+          <figure class="gallery-panel" data-gallery-panel="orchard" hidden>
+            <img src="6pomeranc.png" alt="A sunlit orange tree laden with ripe fruit, showing leafy branches, warm daylight, and the steady rhythm of a healthy citrus orchard" loading="lazy">
+            <figcaption>Orchard scenes remind us that oranges begin with careful seasonal work.</figcaption>
+          </figure>
+          <figure class="gallery-panel" data-gallery-panel="table" hidden>
+            <img src="7pomeranc.png" alt="A whole orange beside a sliced half arranged like a simple food presentation, emphasizing color contrast, freshness, and everyday serving potential" loading="lazy">
+            <figcaption>At the table, oranges bring brightness to simple meals and composed dishes.</figcaption>
+          </figure>
+        </div>
+      </div>
+    </section>
+
+    <section class="section contact-section" id="contact">
+      <div class="container contact-grid reveal">
+        <div>
+          <p class="eyebrow">Contact</p>
+          <h2>Have a question about oranges, orchards, or seasonal care?</h2>
+          <p>Use the form to start a conversation about cultivation tips, fruit selection, or any orange-focused topic you want to explore further.</p>
+        </div>
+
+        <form class="contact-form" action="#" method="post">
+          <label>
+            <span>Name</span>
+            <input type="text" name="name" autocomplete="name" placeholder="Your name" required>
+          </label>
+          <label>
+            <span>Email</span>
+            <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+          </label>
+          <label>
+            <span>Message</span>
+            <textarea name="message" rows="5" placeholder="Share your orange question or idea" required></textarea>
+          </label>
+          <button class="button button-primary" type="submit">Send message</button>
+        </form>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <p>Orange Atlas</p>
+    </div>
+  </footer>
+</body>
+</html>
