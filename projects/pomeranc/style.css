@@ -91,6 +91,7 @@ button {
   justify-content: space-between;
   gap: 1rem;
   min-height: 4.75rem;
+  position: relative;
 }
 
 .brand {
@@ -121,6 +122,14 @@ button {
   border: 1px solid var(--border);
   border-radius: 999px;
   background: #fff;
+  margin-left: auto;
+  z-index: 2;
+}
+
+.header-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
 }
 
 .menu-lines {
@@ -615,4 +624,15 @@ figcaption {
   background: var(--brand);
   color: #000;
   font-weight: 700;
+}
+
+@media (min-width: 48rem) {
+  .header-center {
+    position: static;
+    transform: none;
+  }
+
+  .menu-toggle {
+    margin-left: 0;
+  }
 }

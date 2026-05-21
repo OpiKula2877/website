@@ -1,4 +1,37 @@
 document.addEventListener('DOMContentLoaded', () => {
+    // Mobile navigation toggle
+    const menuToggle = document.querySelector('.menu-toggle');
+    const siteNav = document.querySelector('.site-nav');
+
+    if (menuToggle && siteNav) {
+        const closeMenu = () => {
+            menuToggle.setAttribute('aria-expanded', 'false');
+            siteNav.classList.remove('nav-open');
+        };
+
+        menuToggle.addEventListener('click', () => {
+            const isExpanded = menuToggle.getAttribute('aria-expanded') === 'true';
+            menuToggle.setAttribute('aria-expanded', String(!isExpanded));
+            siteNav.classList.toggle('nav-open', !isExpanded);
+        });
+
+        siteNav.querySelectorAll('a').forEach(link => {
+            link.addEventListener('click', closeMenu);
+        });
+
+        document.addEventListener('keydown', (event) => {
+            if (event.key === 'Escape') {
+                closeMenu();
+            }
+        });
+
+        window.addEventListener('resize', () => {
+            if (window.innerWidth > 768) {
+                closeMenu();
+            }
+        });
+    }
+
     // Easter Egg: Console message
     console.log("%cWellcome", "color: rgb(62, 91, 255); font-size: 20px; font-weight: bold; font-family: 'Cinzel', serif;");
 
