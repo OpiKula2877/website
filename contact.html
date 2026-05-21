@@ -9,11 +9,12 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <style>
         body {
-            overflow: hidden; /* Úplně zakáže scrollování na této stránce */
+            overflow-y: auto;
+            overflow-x: hidden;
         }
         main {
-            height: calc(100vh - 75px); /* Přesná výška obrazovky mínus hlavička */
-            padding: 0 5% !important; /* Odstraní původní velký padding, co dělal scrollbar */
+            min-height: calc(100vh - 75px);
+            padding: 1.5rem 5% !important;
             display: flex;
             flex-direction: column;
             justify-content: center;
@@ -21,6 +22,7 @@
         }
         .contact-container {
             width: 100%;
+            margin: 1rem 0;
         }
     </style>
 </head>
