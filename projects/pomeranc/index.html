@@ -35,21 +35,20 @@
   </script>
 </head>
 <body>
-  <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <header class="site-header" id="top">
+  <header class="site-header" id="top" role="banner">
     <div class="container header-inner">
-      <a class="brand" href="#top" aria-label="Orange Atlas home">
+      <a class="brand" href="#hero" aria-label="Orange Atlas home">
         <span><img src="pomeranc.ico" alt=""></span>
-        <span class="brand-text">About Oranges</span>
+        <span class="brand-text hide-mobile">About Oranges</span>
       </a>
 
-      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open menu">
+      <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation" aria-label="Open menu" aria-haspopup="true">
         <span class="menu-lines" aria-hidden="true"></span>
       </button>
 
-      <div class="header-center"><a aria-label="Orange Atlas home" class="back-button" href="../../projects.html">ZPĚT</a></div>
-      <nav class="site-nav" id="primary-navigation" aria-label="Primary navigation">
+      <div class="header-center"><a aria-label="Return to projects overview" class="back-button" href="../../projects.html">ZPĚT</a></div>
+      <nav class="site-nav" id="primary-navigation" aria-label="Primary navigation" role="navigation">
         <ul>
           <li><a href="#hero">Home</a></li>
           <li><a href="#features">Highlights</a></li>
@@ -60,13 +59,12 @@
       </nav>
     </div>
   </header>
-
   <main id="main-content">
     <section class="hero section" id="hero">
       <div class="container hero-grid reveal">
         <div class="hero-copy">
           <p class="eyebrow">Citrus knowledge for growers and enthusiasts</p>
-          <h1 id="top">The orange, explained with clarity, flavor, and orchard insight.</h1>
+          <h1 id="hero-title">The orange, explained with clarity, flavor, and orchard insight.</h1>
           <p class="lead">From sunlit groves to kitchen tables, this page explores what makes oranges a standout fruit: bright aroma, resilient cultivation, nutrition-rich flesh, and a long seasonal story worth celebrating.</p>
           <div class="hero-actions">
             <a class="button button-primary" href="#facts">Explore facts</a>
@@ -88,11 +86,11 @@
       </div>
     </section>
 
-    <section class="section" id="features">
+    <section class="section" id="features" aria-labelledby="features-title">
       <div class="container">
         <div class="section-heading reveal">
           <p class="eyebrow">Why oranges stand out</p>
-          <h2>Three qualities that make oranges easy to admire and useful to grow.</h2>
+          <h2 id="features-title">Three qualities that make oranges easy to admire and useful to grow.</h2>
         </div>
 
         <div class="cards-grid">
@@ -117,65 +115,65 @@
       </div>
     </section>
 
-    <section class="section soft-panel" id="facts">
+    <section class="section soft-panel" id="facts" aria-labelledby="facts-title">
       <div class="container facts-grid">
         <div class="section-heading reveal">
           <p class="eyebrow">Orange facts</p>
-          <h2>Interactive notes on ripening, nutrition, and cultivation.</h2>
+          <h2 id="facts-title">Interactive notes on ripening, nutrition, and cultivation.</h2>
           <p>Tap each item to open the details. The content is written for quick scanning and deeper reading.</p>
         </div>
 
-        <div class="accordion reveal" data-accordion>
-          <button class="accordion-trigger" type="button" aria-expanded="false">
+        <div class="accordion reveal" data-accordion role="region" aria-label="Orange facts accordion">
+          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="fact-panel-1" id="fact-trigger-1">
             <span>How do you know an orange is ready?</span>
             <span class="accordion-icon" aria-hidden="true"></span>
           </button>
-          <div class="accordion-panel" hidden>
+          <div class="accordion-panel" id="fact-panel-1" role="region" aria-labelledby="fact-trigger-1" hidden>
             <p>Color alone is not the full story. A ripe orange usually feels dense for its size, smells bright near the stem, and has a peel that releases citrus oils when gently pressed. Texture, weight, and season often tell the story better than the exact shade of the skin.</p>
           </div>
 
-          <button class="accordion-trigger" type="button" aria-expanded="false">
+          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="fact-panel-2" id="fact-trigger-2">
             <span>What makes oranges so useful nutritionally?</span>
             <span class="accordion-icon" aria-hidden="true"></span>
           </button>
-          <div class="accordion-panel" hidden>
+          <div class="accordion-panel" id="fact-panel-2" role="region" aria-labelledby="fact-trigger-2" hidden>
             <p>Oranges are valued for vitamin C, hydration, and naturally occurring plant compounds that support a balanced diet. They are easy to include in breakfasts, snacks, and simple recipes without requiring much preparation.</p>
           </div>
 
-          <button class="accordion-trigger" type="button" aria-expanded="false">
+          <button class="accordion-trigger" type="button" aria-expanded="false" aria-controls="fact-panel-3" id="fact-trigger-3">
             <span>Which orchard conditions matter most?</span>
             <span class="accordion-icon" aria-hidden="true"></span>
           </button>
-          <div class="accordion-panel" hidden>
+          <div class="accordion-panel" id="fact-panel-3" role="region" aria-labelledby="fact-trigger-3" hidden>
             <p>Consistent sunlight, well-managed irrigation, soil health, and pest monitoring matter most. Strong trees depend on seasonal care, steady pruning, and careful harvesting practices that protect fruit quality from field to basket.</p>
           </div>
         </div>
       </div>
     </section>
 
-    <section class="section" id="gallery">
+    <section class="section" id="gallery" aria-labelledby="gallery-title">
       <div class="container gallery-shell">
         <div class="section-heading reveal">
           <p class="eyebrow">Interactive gallery</p>
-          <h2>Switch between orange perspectives and compare the details.</h2>
+          <h2 id="gallery-title">Switch between orange perspectives and compare the details.</h2>
         </div>
 
         <div class="gallery-controls reveal" role="tablist" aria-label="Orange gallery views">
-          <button class="gallery-tab is-active" type="button" role="tab" aria-selected="true" data-gallery-target="closeup">Close-up</button>
-          <button class="gallery-tab" type="button" role="tab" aria-selected="false" data-gallery-target="orchard">Orchard</button>
-          <button class="gallery-tab" type="button" role="tab" aria-selected="false" data-gallery-target="table">Table</button>
+          <button class="gallery-tab is-active" type="button" role="tab" aria-selected="true" aria-controls="gallery-panel-closeup" id="gallery-tab-closeup" data-gallery-target="closeup">Close-up</button>
+          <button class="gallery-tab" type="button" role="tab" aria-selected="false" aria-controls="gallery-panel-orchard" id="gallery-tab-orchard" data-gallery-target="orchard">Orchard</button>
+          <button class="gallery-tab" type="button" role="tab" aria-selected="false" aria-controls="gallery-panel-table" id="gallery-tab-table" data-gallery-target="table">Table</button>
         </div>
 
         <div class="gallery-panels reveal">
-          <figure class="gallery-panel is-active" data-gallery-panel="closeup">
+          <figure class="gallery-panel is-active" data-gallery-panel="closeup" id="gallery-panel-closeup" role="tabpanel" aria-labelledby="gallery-tab-closeup">
             <img src="5pomeranc.png" alt="Detailed close-up of orange flesh with luminous segment walls, natural moisture, and a clean cut surface that highlights freshness" loading="lazy">
             <figcaption>Close-up texture reveals the fruit's juice-rich structure.</figcaption>
           </figure>
-          <figure class="gallery-panel" data-gallery-panel="orchard" hidden>
+          <figure class="gallery-panel" data-gallery-panel="orchard" id="gallery-panel-orchard" role="tabpanel" aria-labelledby="gallery-tab-orchard" hidden>
             <img src="6pomeranc.png" alt="A sunlit orange tree laden with ripe fruit, showing leafy branches, warm daylight, and the steady rhythm of a healthy citrus orchard" loading="lazy">
             <figcaption>Orchard scenes remind us that oranges begin with careful seasonal work.</figcaption>
           </figure>
-          <figure class="gallery-panel" data-gallery-panel="table" hidden>
+          <figure class="gallery-panel" data-gallery-panel="table" id="gallery-panel-table" role="tabpanel" aria-labelledby="gallery-tab-table" hidden>
             <img src="7pomeranc.png" alt="A whole orange beside a sliced half arranged like a simple food presentation, emphasizing color contrast, freshness, and everyday serving potential" loading="lazy">
             <figcaption>At the table, oranges bring brightness to simple meals and composed dishes.</figcaption>
           </figure>
@@ -183,26 +181,26 @@
       </div>
     </section>
 
-    <section class="section contact-section" id="contact">
+    <section class="section contact-section" id="contact" aria-labelledby="contact-title">
       <div class="container contact-grid reveal">
         <div>
           <p class="eyebrow">Contact</p>
-          <h2>Have a question about oranges, orchards, or seasonal care?</h2>
+          <h2 id="contact-title">Have a question about oranges, orchards, or seasonal care?</h2>
           <p>Use the form to start a conversation about cultivation tips, fruit selection, or any orange-focused topic you want to explore further.</p>
         </div>
 
-        <form class="contact-form" action="#" method="post">
+        <form class="contact-form" action="#" method="post" aria-label="Contact form">
           <label>
             <span>Name</span>
-            <input type="text" name="name" autocomplete="name" placeholder="Your name" required>
+            <input type="text" name="name" autocomplete="name" placeholder="Your name" required aria-required="true">
           </label>
           <label>
             <span>Email</span>
-            <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required>
+            <input type="email" name="email" autocomplete="email" placeholder="you@example.com" required aria-required="true">
           </label>
           <label>
             <span>Message</span>
-            <textarea name="message" rows="5" placeholder="Share your orange question or idea" required></textarea>
+            <textarea name="message" rows="5" placeholder="Share your orange question or idea" required aria-required="true"></textarea>
           </label>
           <button class="button button-primary" type="submit">Send message</button>
         </form>
@@ -210,9 +208,16 @@
     </section>
   </main>
 
-  <footer class="site-footer">
+  <footer class="site-footer" role="contentinfo">
     <div class="container footer-inner">
       <p>&copy; 2026 Orange Atlas. Generated with Claude and Copilot.</p>
+      <div class="footer-socials" aria-label="Social links">
+        <ul>
+          <li><a href="https://github.com/OpiKula2877" target="_blank" rel="noopener noreferrer">GitHub</a></li>
+          <li><a href="https://www.instagram.com/opikula28/" target="_blank" rel="noopener noreferrer">Instagram</a></li>
+          <li><a href="https://www.youtube.com/@OpiKula" target="_blank" rel="noopener noreferrer">YouTube</a></li>
+        </ul>
+      </div>
     </div>
   </footer>
 </body>

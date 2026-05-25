@@ -102,6 +102,27 @@ button {
   letter-spacing: 0.02em;
 }
 
+/* Keep brand text on a single line and prevent it from pushing layout; hide on small screens */
+.brand-text {
+  display: inline-block;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: clip;
+  max-width: 12rem;
+}
+
+/* utility to hide text on narrow viewports */
+.hide-mobile {
+  display: inline-block;
+}
+
+@media (max-width: 48rem) {
+  .brand-text,
+  .hide-mobile {
+    display: none;
+  }
+}
+
 .brand-mark {
   display: inline-grid;
   place-items: center;
