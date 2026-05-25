@@ -1,4 +1,5 @@
-# My Website
+# <a href="https://OpiKula.dev"> My Website </a>
+
 
 This is my personal website, built with AI support.
 
@@ -16,7 +17,7 @@ It includes:
 - `OK.png`: my interactive logo.
 - When hovered, the logo rotates `360deg`.
 - When clicked 3 or more times and released, it rotates `1080deg`.
-- Navigation links to the main pages.
+- Navigation links to the main pages
 - On smaller screen widths, the links collapse into a hamburger menu.
 
 ## `index.html`
