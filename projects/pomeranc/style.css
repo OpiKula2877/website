@@ -412,7 +412,19 @@ figcaption {
 }
 
 .accordion-panel {
+  /* hide by default to avoid layout gaps when panels are closed */
+  display: none;
   padding: 0 1.15rem 1.1rem;
+}
+
+/* Show panel only when the preceding trigger has aria-expanded="true" */
+.accordion-trigger[aria-expanded="true"] + .accordion-panel {
+  display: block;
+}
+
+/* Prevent large bottom margins inside the panel from creating extra space */
+.accordion-panel p {
+  margin-block-end: 0;
 }
 
 .accordion-icon {
@@ -449,6 +461,17 @@ figcaption {
   margin-bottom: 1rem;
 }
 
+/* center the gallery control buttons */
+.gallery-controls {
+  justify-content: center;
+}
+
+/* ensure controls and panels span both grid columns so they sit centered */
+.gallery-shell > .gallery-controls,
+.gallery-shell > .gallery-panels {
+  grid-column: 1 / -1;
+}
+
 .gallery-tab {
   border: 1px solid var(--border);
   background: #fff;
@@ -464,16 +487,37 @@ figcaption {
 
 .gallery-panels {
   display: grid;
+  /* center gallery items horizontally inside the grid */
+  justify-items: center;
+}
+
+/* constrain panels width and center the whole panels area */
+.gallery-panels {
+  width: 100%;
+  max-width: 48rem;
+  margin-inline: auto;
 }
 
 .gallery-panel {
   margin: 0;
   padding: 0.8rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
 }
 
 .gallery-panel img {
   aspect-ratio: 16 / 11;
   object-fit: cover;
+  /* limit image width so it sits centered and not edge-to-edge */
+  width: 100%;
+  max-width: 48rem;
+}
+
+/* Ensure panels with the boolean `hidden` attribute remain hidden (JS toggles this) */
+.gallery-panel[hidden] {
+  display: none;
 }
 
 .contact-grid {
