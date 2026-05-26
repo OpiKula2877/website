@@ -19,28 +19,28 @@
 ```text
 website/
 ├── projects/
-│   └── pomeranc/
-│       ├── 1pomeranc.png    <- Gallery/content image 1
-│       ├── 2pomeranc.png    <- Gallery/content image 2
-│       ├── 3pomeranc.png    <- Gallery/content image 3
-│       ├── 4pomeranc.png    <- Gallery/content image 4
-│       ├── 5pomeranc.png    <- Gallery/content image 5
-│       ├── 6pomeranc.png    <- Gallery/content image 6
-│       ├── 7pomeranc.png    <- Gallery/content image 7
-│       ├── index.html       <- Main page structure and semantic content
-│       ├── pomeranc.ico     <- Project favicon
-│       ├── README.md        <- This documentation file
-│       ├── robots.txt       <- Search engine crawl instructions
-│       ├── script.js        <- Interactive behavior (menu, accordion, tabs, reveal)
-│       ├── sitemap.xml      <- URL map for search engines
-│       ├── style.css        <- Project-specific styles and responsive layout
-│       └── pngs/
-│           ├── problem1.png <- Technical issue screenshot #1
-│           ├── problem2.png <- Technical issue screenshot #2
-│           ├── problem3.png <- Technical issue screenshot #3
-│           ├── problem4.png <- Technical issue screenshot #4
-│           ├── scr1.png     <- Desktop screenshot
-│           └── scr2.png     <- Mobile screenshot
+    └── pomeranc/
+        ├── 1pomeranc.png    <- Gallery/content image 1
+        ├── 2pomeranc.png    <- Gallery/content image 2
+        ├── 3pomeranc.png    <- Gallery/content image 3
+        ├── 4pomeranc.png    <- Gallery/content image 4
+        ├── 5pomeranc.png    <- Gallery/content image 5
+        ├── 6pomeranc.png    <- Gallery/content image 6
+        ├── 7pomeranc.png    <- Gallery/content image 7
+        ├── index.html       <- Main page structure and semantic content
+        ├── pomeranc.ico     <- Project favicon
+        ├── README.md        <- This documentation file
+        ├── robots.txt       <- Search engine crawl instructions
+        ├── script.js        <- Interactive behavior (menu, accordion, tabs, reveal)
+        ├── sitemap.xml      <- URL map for search engines
+        ├── style.css        <- Project-specific styles and responsive layout
+        └── pngs/
+            ├── problem1.png <- Technical issue screenshot #1
+            ├── problem2.png <- Technical issue screenshot #2
+            ├── problem3.png <- Technical issue screenshot #3
+            ├── problem4.png <- Technical issue screenshot #4
+            ├── scr1.png     <- Desktop screenshot
+            └── scr2.png     <- Mobile screenshot
 ```
 
 ## 4. Technical Analysis (6 Optimization Areas)
