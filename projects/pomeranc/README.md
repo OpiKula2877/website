@@ -18,7 +18,7 @@
 
 ```text
 website/
-├── projects/
+└── projects/
     └── pomeranc/
         ├── 1pomeranc.png    <- Gallery/content image 1
         ├── 2pomeranc.png    <- Gallery/content image 2
