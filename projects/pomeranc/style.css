@@ -55,6 +55,7 @@ button {
 .container {
   width: min(100% - 1.5rem, var(--container));
   margin-inline: auto;
+  padding-inline: 10px;
 }
 
 .skip-link {
@@ -254,6 +255,7 @@ button {
 
 .eyebrow {
   margin: 0 0 0.75rem;
+  padding-left: 10px;
   text-transform: uppercase;
   letter-spacing: 0.18em;
   font-size: 0.78rem;
@@ -281,6 +283,7 @@ h2 {
   line-height: 1.05;
   letter-spacing: -0.04em;
   margin-bottom: 0.9rem;
+  padding-left: 10px;
   max-width: 15ch;
 }
 
@@ -497,7 +500,7 @@ figcaption {
 }
 
 .gallery-shell {
-  justify-items: center;
+  justify-items: start;
 }
 
 .gallery-tab {
@@ -666,10 +669,13 @@ figcaption {
 
   .gallery-shell .section-heading {
     grid-area: heading;
+    grid-column: 1;
     margin-bottom: 0;
-    justify-self: end;
-    text-align: right;
-    max-width: 24rem;
+    justify-self: start;
+    text-align: left;
+    padding-left: 10px;
+    width: 100%;
+    max-width: none;
   }
 
   .gallery-controls {
