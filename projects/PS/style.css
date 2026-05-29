@@ -1,0 +1,159 @@
+* {
+    text-decoration: none;
+    margin: 0px;
+    background-color: #ACBCCC;
+    cursor: url('galerie/Cursor8.png'), pointer;
+}
+
+
+html {
+    cursor: url('galerie/Cursor8.png'), pointer;
+}
+
+a img,a {
+    cursor: url('galerie/bc.png'), pointer;
+}
+
+.container {
+    display: flex;
+}
+  .column {
+    flex: 1;
+}
+
+table{
+    margin-left: auto;
+    margin-right: auto;
+}
+
+body {
+    text-align: center;
+    font-family: "Cinzel", serif;
+    font-optical-sizing: auto;
+    font-style: normal;
+}
+
+#url1 a {
+    margin-right: 20px;
+    color: #000000;
+    border: 2px solid rgb(0, 0, 0);
+    padding: 1.5px 1.5px; 
+    background-color: #4296DF;
+    border-radius: 5px;
+    font-size: 20px;
+    font-family: cursive;
+}
+h1 {
+    font-size: 50px;
+    margin: 10px;
+    text-decoration:underline;
+    
+}
+#url1 {
+    background-color: #4073A3;
+    padding: 1%;
+    margin: 0px;
+}
+
+p {
+    margin: 25px;
+    line-height: 30px;
+}
+
+p br {
+    line-height: 10px;
+}
+
+.galery {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 20px;  
+    cursor: url('galerie/Cursor8.png'), pointer;
+}
+
+img {
+    max-width: 100%;
+    height: 500px;
+    flex: 1 1 calc(33.3% - 200px);
+    max-width: 50%;
+    height: 100px;
+}
+
+.submit {
+    background-color: #3498db;
+    color: white;
+    transition: background-color 5s;
+    cursor: url('galerie/bc.png'), grab;
+}
+.submit:hover {
+  background-color: #000000;
+}
+
+button, a {
+    cursor: url('galerie/cursor2.png'), pointer;
+    margin-bottom: 150px;
+}
+
+
+button, .stahovaci-tlacitko{
+    padding: 10px 20px;
+    font-size: 16px;
+    border: 1px solid #3498db;
+    background-color: #adc8e3;
+    color: #000;
+    text-decoration: none;
+    display: inline-block;
+    cursor: pointer;
+    font-family: Arial, sans-serif;
+}
+.btnNe {
+    cursor: url('galerie/cursor2.png'), pointer;
+}
+
+button:hover{
+    background-color: #ff7575;
+    cursor: url('galerie/cursor2.png'), pointer;
+}
+.stahovaci-tlacitko:hover{
+    background-color: #aaff75;
+    cursor: url('galerie/cursor2.png'), pointer;
+}
+        
+.container {
+    display: flex;
+    min-height: 100vh;
+}
+
+.column {
+    width: 33.333%;
+    padding: 40px 30px;
+    background-color: #ACBCCC;
+    border-right: 1px solid #ACBCCC;
+}
+
+.column:last-child {
+    border-right: none;
+}
+
+.column ol {
+    margin-left: 20px;
+}
+
+.column li {
+    margin-bottom: 15px;
+    text-align: justify;
+}
+
+@media (max-width: 768px) {
+    .container {
+        flex-direction: column;
+    }
+    
+    .column {
+        width: 100%;
+        border-right: none;
+        border-bottom: 1px solid #000000;
+    }
+}

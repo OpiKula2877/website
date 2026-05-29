@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Windows Security - Varování</title>
+  <link rel="stylesheet" href="style.css">
+  <link href="https://fonts.googleapis.com/css2?family=Segoe+UI:wght@400;600;700&display=swap" rel="stylesheet">
+</head>
+<body>
+  <div class="overlay"></div>
+
+  <div class="main-container">
+    <div class="banner-ads">
+      <div class="ad-strip">
+        <a href="virus.html" class="ad"><img src="https://i3.cn.cz/15/1770107260_P2026020302226.jpg" width="120" alt=""><span>Donald Trump - Best Candidate 2016? Vote Here</span></a>
+        <a href="virus.html" class="ad"><img src="https://upload.wikimedia.org/wikipedia/commons/9/99/2015_The_Sweet_-_by_2eight_-_DSC1002.jpg" width="120" alt=""><span>Photos From The Past Are Bitter Sweet...</span></a>
+        <a href="virus.html" class="ad"><img src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2023-06/18-temu-ob-785375.jpg" width="120" alt=""><span>Amazing Deals - Limited Time!</span></a>
+        <a href="virus.html" class="ad"><img src="https://1884403144.rsc.cdn77.org/foto/vera-mikulcova-sport-svaly-jana-pritelkyne/MTIwMHg2NzUvc21hcnQvaW1n/5943971.jpg?v=0&st=zPh-K1cYNS1jQ9oGLc7CSJ-G7-nMjUqctPeoCOpvwMQ&ts=1600812000&e=0"  width="150px">Celebrity Weight Loss Secrets Revealed</a>
+      </div>
+    </div>
+
+    <div class="content-area">
+      <div class="alert-window">
+        <div class="alert-header">
+          <span class="alert-icon">⚠️</span>
+          <span class="alert-title">Windows Security</span>
+        </div>
+        <div class="alert-body">
+          <div class="warning-badges">
+            <img src="! (!).png" alt="!" class="warn-icon"><img src="! (!).png" alt="!" class="warn-icon big"><img src="! (!).png" alt="!" class="warn-icon">
+          </div>
+          <h1>Kritické zabezpečení!<br>Na vašem zařízení byl detekován malware</h1>
+          <p class="scan-result">
+            <span class="found-label">Nalezeno:</span>
+            <span class="virus-count" id="virusCount">247</span> hrozeb
+          </p>
+          <div class="scan-progress">
+            <div class="progress-bar">
+              <div class="progress-fill" id="progressFill"></div>
+            </div>
+            <p class="progress-text" id="progressText">Kontrola systémových souborů... 67%</p>
+          </div>
+          <div class="action-area">
+            <a href="virus.html" class="download-btn">
+              <span class="btn-icon">⬇</span> STÁHNOUT OCHRANU (ZDARMA)
+            </a>
+            <div class="trust-badges">
+              <span>✓ Microsoft Certified</span>
+              <span>✓ 4.8/5 hodnocení</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="banner-ads right">
+      <div class="ad-strip vertical">
+        <a href="virus.html" class="ad"><img src="https://imgs.search.brave.com/JXtISEiqVGM47d4gAMJXiHAXPmQrJbn-ojoGT7FW8Bo/rs:fit:860:0:0:0/g:ce/aHR0cHM6Ly90aHVt/YnMuZHJlYW1zdGlt/ZS5jb20vYi9vbGQt/d29tYW4tYmVhdXRp/ZnVsLWZhY2UtY2xv/c2UtdXAtc3R1ZGlv/LXBvcnRyYWl0LWF0/dHJhY3RpdmUtc2Vu/aW9yLWhlci1oZWFk/LXJlc3RpbmctaGVy/LWhhbmRzLWFnYWlu/c3QtZ3JleS1iYWNr/Z3JvdW5kLTQzMTYz/NTk5LmpwZw"  width="150px">Hot Singles In Your Area</a>
+        <a href="virus.html" class="ad vertical-ad"><img src="https://www.health.com/thmb/SdPQyoPQI9RNNgiosDAMnVsWuyk=/2000x1333/filters:fill(auto,1)/penis-size-gettyimages-683239812-2000-e744ebb3ce4d4d1ba7d83f988e65adb4.jpg" width="150" alt=""><span>Dentists Hate This Trick</span></a>
+        <a href="virus.html" class="ad"><img src="https://i.ytimg.com/vi/V1w1BNWdH6o/maxresdefault.jpg"  width="150px">You Won't Believe What Happened Next</a>
+        <a href="virus.html" class="ad"><img src="https://media-cldnry.s-nbcnews.com/image/upload/rockcms/2023-06/18-temu-ob-785375.jpg"  width="150px">Click Here For Amazing Deals</a>
+      </div>
+    </div>
+  </div>
+
+  <div class="modal-overlay" id="urgentModal">
+    <div class="modal-popup">
+      <div class="modal-header urgent">
+        <span>⚠ URGENTNÍ VAROVÁNÍ</span>
+      </div>
+      <div class="modal-body">
+        <p>Vaše osobní údaje mohou být ohroženy!</p>
+        <p class="countdown">Doporučená akce během: <span id="countdown">05:00</span></p>
+        <button class="modal-btn" onclick="document.getElementById('urgentModal').style.display='none'">Zavřít</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="scripts.js"></script>
+</body>
+</html>

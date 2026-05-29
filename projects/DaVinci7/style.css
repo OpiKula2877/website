@@ -1,0 +1,89 @@
+body {
+    background-image: url("Bliss.jpg");
+    background-size: 1980px 1080px;
+}
+
+@font-face {
+    font-family: 'Franklin Gothic Condensed';
+    font-style: normal;
+    font-weight: normal;
+    src: local('Franklin Gothic Condensed'), url('FRANKGO.woff') format('woff');
+}
+
+.page {
+    background-color: #ffffff;
+    max-width: 700px;
+    width: 100%;
+    margin: 60px auto;
+    padding: 20px;
+    border: 5px, solid,#015CF6;
+    border-top-width: 20px;
+}
+
+.ramec{
+    border: 5px, solid,#015CF6;
+    max-width: 700px;
+    width: 100%;
+    margin: 60px auto;
+    padding: 20px;
+    background-color:#ece9d8 ;
+    border-top-width: 20px;
+}
+
+#pen{
+    background-color: #ffffff;
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 2px, solid, #ece9d8;
+    padding: 3px;
+    border-radius: 3px;
+}
+
+#eraser{
+    background-color: #ffffff;
+    width: 24px;
+    height: 24px;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: contain;
+    border: 2px, solid, #ece9d8;
+    padding: 3px;
+    border-radius: 3px;
+}
+
+#colors {
+    display: grid;
+    grid-template-columns: repeat(10, 20px);
+    gap: 4px;
+    margin: 8px 0;
+}
+
+#colors button {
+    width: 20px;
+    height: 20px;
+    border: 1px solid #666;
+    padding: 0;
+    cursor: pointer;
+    border: 2px, inset, #ece9d8;
+    padding: 3px;
+    border-radius: 3px;
+}
+
+#canvas {
+    background-color: #ffffff;
+    border: 5px, solid, #7A7D79;
+}
+
+#tools {
+    display: flex;
+    gap: 4px;
+}
+
+a {
+    text-decoration: none;
+    color:#015bf6b3;
+    
+}
