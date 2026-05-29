@@ -49,21 +49,6 @@ It includes:
   - `min-height: 60vh;`
   - `text-align: center;`
 
-### Archimédův zákon
-- Sloppy shit alert!!!
-- This is the first project I added here.
-- I built it with support from Claude and GitHub Copilot.
-- It is an educational project explained in a more casual, Gen Z style.
-- We received it as an assignment from our teacher, <a href="https://github.com/kozakpetr1">Kozi</a>.
-
-### Fake malware website
-- This project was created as an assignment for our teacher, <a href="https://github.com/Waldakot">Kotmel</a>.
-- The task was to build a fake scam website to demonstrate what fraudulent pages can look like.
-
-### Orange
-- This is a small project for teacher Bubilek.
-- We followed the assignment instructions (see `zadanipomeranc.md`).
-
 ## `contact.html`
 
 This page includes:
