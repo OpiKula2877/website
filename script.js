@@ -31,9 +31,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         });
     }
-
     // Easter Egg: Console message
-    console.log("%cWelcome", "color: rgb(62, 91, 255); font-size: 20px; font-weight: bold; font-family: 'Cinzel', serif;");
+    console.log("%cWelcome", "color: rgb(255, 62, 62); font-size: 20px; font-weight: bold; font-family: 'Cinzel', serif;");
 
     // Easter Egg: Logo interaction
     const logo = document.getElementById('brand-logo');
