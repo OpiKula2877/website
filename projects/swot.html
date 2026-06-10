@@ -1,0 +1,279 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Osobní SWOT analýza</title>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Serif+Display&family=Inter:wght@400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:        #F7F6F2;
+      --surface:   #FFFFFF;
+      --border:    #E2DFD8;
+      --text:      #1A1916;
+      --muted:     #7A7670;
+
+      --s-accent:  #2A6049;
+      --s-light:   #EAF2EE;
+      --w-accent:  #C04A2B;
+      --w-light:   #FBEEE9;
+      --o-accent:  #2558A8;
+      --o-light:   #EAF0FB;
+      --t-accent:  #7B3FA0;
+      --t-light:   #F3EDF9;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      min-height: 100vh;
+      padding: 60px 20px 40px;
+    }
+
+    header {
+      text-align: center;
+      margin-bottom: 56px;
+    }
+
+    header .eyebrow {
+      font-size: 0.75rem;
+      font-weight: 600;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 12px;
+    }
+
+    header h1 {
+      font-family: 'DM Serif Display', serif;
+      font-size: clamp(2rem, 5vw, 3.2rem);
+      line-height: 1.15;
+      color: var(--text);
+    }
+
+    header .divider {
+      width: 48px;
+      height: 3px;
+      background: var(--text);
+      margin: 20px auto 0;
+      border-radius: 2px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+
+    .card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 28px 28px 24px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 4px;
+    }
+
+    .card.s::before { background: var(--s-accent); }
+    .card.w::before { background: var(--w-accent); }
+    .card.o::before { background: var(--o-accent); }
+    .card.t::before { background: var(--t-accent); }
+
+    .card-header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .badge {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'DM Serif Display', serif;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    .card.s .badge { background: var(--s-light); color: var(--s-accent); }
+    .card.w .badge { background: var(--w-light); color: var(--w-accent); }
+    .card.o .badge { background: var(--o-light); color: var(--o-accent); }
+    .card.t .badge { background: var(--t-light); color: var(--t-accent); }
+
+    .card-title {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.15rem;
+      line-height: 1.2;
+    }
+
+    .card-title span {
+      display: block;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.7rem;
+      font-weight: 500;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      margin-bottom: 2px;
+    }
+
+    .card ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 9px;
+    }
+
+    .card ul li {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.875rem;
+      line-height: 1.5;
+      color: #3A3834;
+    }
+
+    .card ul li::before {
+      content: '';
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      margin-top: 6px;
+      flex-shrink: 0;
+    }
+
+    .card.s li::before { background: var(--s-accent); }
+    .card.w li::before { background: var(--w-accent); }
+    .card.o li::before { background: var(--o-accent); }
+    .card.t li::before { background: var(--t-accent); }
+
+    footer {
+      text-align: center;
+      margin-top: 52px;
+      padding-top: 28px;
+      border-top: 1px solid var(--border);
+      max-width: 860px;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    footer .name {
+      font-family: 'DM Serif Display', serif;
+      font-size: 1.1rem;
+      color: var(--text);
+    }
+
+    footer .meta {
+      font-size: 0.8rem;
+      color: var(--muted);
+      margin-top: 4px;
+      letter-spacing: 0.04em;
+    }
+
+    @media (max-width: 600px) {
+      .grid { grid-template-columns: 1fr; }
+      body { padding: 40px 16px 32px; }
+    }
+  </style>
+</head>
+<body>
+
+  <header>
+    <h1>Osobní SWOT analýza</h1>
+    <div class="divider"></div>
+  </header>
+
+  <div class="grid">
+
+    <div class="card s">
+      <div class="card-header">
+        <div class="badge">S</div>
+        <div class="card-title">
+          <span>Strengths</span>
+          Silné stránky
+        </div>
+      </div>
+      <ul>
+        <li>Rychlé učení nových technologií a programovacích jazyků</li>
+        <li>Analytické myšlení a schopnost řešit problémy systematicky</li>
+        <li>Týmová spolupráce a komunikace v kolektivu</li>
+        <li>Zájem o IT obor a vlastní rozvoj nad rámec školy</li>
+        <li>Spolehlivost a důslednost při plnění zadaných úkolů</li>
+      </ul>
+    </div>
+
+    <div class="card w">
+      <div class="card-header">
+        <div class="badge">W</div>
+        <div class="card-title">
+          <span>Weaknesses</span>
+          Slabé stránky
+        </div>
+      </div>
+      <ul>
+        <li>Tendence odkládat méně zajímavé úkoly na poslední chvíli</li>
+        <li>Nedostatečná praxe s prezentováním výsledků před publikem</li>
+        <li>Omezené zkušenosti s reálnými firemními projekty</li>
+        <li>Občasná ztráta motivace při dlouhých a opakujících se činnostech</li>
+        <li>Nižší úroveň sebedůvěry při obhajobě vlastních názorů</li>
+      </ul>
+    </div>
+
+    <div class="card o">
+      <div class="card-header">
+        <div class="badge">O</div>
+        <div class="card-title">
+          <span>Opportunities</span>
+          Příležitosti
+        </div>
+      </div>
+      <ul>
+        <li>Rostoucí poptávka po IT odbornících na trhu práce</li>
+        <li>Možnost absolvovat odborné stáže a praxe ve firmách</li>
+        <li>Dostupnost online kurzů a certifikací pro rozšíření znalostí</li>
+        <li>Rozvoj v oblasti umělé inteligence a moderních technologií</li>
+        <li>Síťování s dalšími studenty a profesionály v oboru</li>
+      </ul>
+    </div>
+
+    <div class="card t">
+      <div class="card-header">
+        <div class="badge">T</div>
+        <div class="card-title">
+          <span>Threats</span>
+          Hrozby
+        </div>
+      </div>
+      <ul>
+        <li>Vysoká konkurence absolventů IT oborů na trhu práce</li>
+        <li>Rychlý vývoj technologií vyžadující neustálé vzdělávání</li>
+        <li>Riziko syndromu vyhoření při intenzivní práci s počítačem</li>
+        <li>Automatizace a AI nahrazující některé juniorní pozice</li>
+        <li>Finanční náklady na další vzdělávání a certifikace</li>
+      </ul>
+    </div>
+
+  </div>
+
+  <footer>
+    <p class="name">Samuel Pelc</p>
+    <p class="meta">2ITE &nbsp;·&nbsp; 10.06.2026</p>
+  </footer>
+
+</body>
+</html>
