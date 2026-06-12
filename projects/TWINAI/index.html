@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#1a1230">
+<title>DvojčeFinder</title>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="style.css">
+
+</head>
+<body>
+<div class="app">
+  <header>
+    <h1>Najdi svého právoplatného dvojčete</h1>
+    <p>100% shoda dvojičete</p>
+  </header>
+
+  <div class="screen">
+
+    <form id="form-screen">
+      <div class="field">
+        <label for="jmeno">Jméno</label>
+        <input type="text" id="jmeno" required placeholder="Tomáš">
+      </div>
+      <div class="field">
+        <label for="vek">Věk</label>
+        <input type="number" id="vek" required min="1" max="120" placeholder="27">
+      </div>
+      <div class="field">
+        <label for="stat">Stát</label>
+        <input type="text" id="stat" required placeholder="Česká republika">
+      </div>
+      <div class="field">
+        <label for="mesto">Město</label>
+        <input type="text" id="mesto" required placeholder="Praha">
+      </div>
+      <div class="field">
+        <label for="koniky">Koníčky</label>
+        <input type="text" id="koniky" required placeholder="cestování, hudba, fotbal">
+      </div>
+      <div class="field">
+        <label>Fotka obličeje</label>
+        <div class="photo-upload">
+          <div class="photo-preview" id="photo-preview"></div>
+          <div class="file-btn">
+            <label for="foto">Vybrat fotku</label>
+            <input type="file" id="foto" accept="image/*" required>
+          </div>
+        </div>
+      </div>
+      <button type="submit" class="primary">Hledat dvojče</button>
+    </form>
+
+    <div id="loading-screen" class="loading-screen hidden">
+      <div class="counter" id="counter">2451458</div>
+      <div class="counter-label">prohledaných profilů</div>
+      <div class="spinner"></div>
+      <div class="status-text">
+        <div id="status-main">Hledám dvojče...</div>
+        <div id="status-sub" class="dim"></div>
+      </div>
+    </div>
+
+    <div id="result-screen" class="result-screen hidden">
+      <h2>Tvé dvojče bylo nalezeno!</h2>
+      <img id="match-photo" class="match-photo" alt="Dvojče">
+      <div class="match-percent">99.67%</div>
+      <div class="match-label">shoda</div>
+      <div class="match-info">
+        <div><b>Jméno:</b> <span id="r-jmeno"></span></div>
+        <div><b>Věk:</b> <span id="r-vek"></span></div>
+        <div><b>Lokace:</b> <span id="r-mesto"></span>, <span id="r-stat"></span></div>
+        <div><b>Koníčky:</b> <span id="r-koniky"></span></div>
+      </div>
+      <button class="primary" id="restart-btn">Hledat znovu</button>
+    </div>
+
+  </div>
+
+  <footer>Dvojče Finder — pro zábavu. Žádná data se nikam neukládají.</footer>
+</div>
+
+<script src="app.js"></script>
+</body>
+</html>
