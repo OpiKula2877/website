@@ -1,6 +1,8 @@
 // ====== Elementy ======
 const formScreen = document.getElementById('form-screen');
 const loadingScreen = document.getElementById('loading-screen');
+const resultScreen = document.getElementById('result-screen');
+const matchPhoto = document.getElementById('match-photo');
 
 const fotoInput = document.getElementById('foto');
 const photoPreview = document.getElementById('photo-preview');
@@ -160,18 +162,24 @@ formScreen.addEventListener('submit', (e) => {
   startMessages();
 
   setTimeout(() => {
-    clearMessages();
-    loadingScreen.classList.add('hidden');
-    formScreen.classList.remove('hidden');
-    formScreen.reset();
-    photoPreview.innerHTML = '';
-    uploadedPhotoData = null;
+      clearMessages();
+      loadingScreen.classList.add('hidden');
+      
+      // Nastavíme statickou fotku twin.png do připraveného img tagu
+      matchPhoto.src = STATIC_MATCH_PHOTO;
+      
+      // Zobrazíme výsledkovou obrazovku přímo na webu
+      resultScreen.classList.remove('hidden');
+    }, 20000);
+});
 
-    // Otevře výsledek v novém okně
-    const resultWindow = window.open('', '_blank');
-    resultWindow.document.write(buildResultHTML(data));
-    resultWindow.document.close();
-  }, 20000);
+// ====== Tlačítko hledat znovu ======
+document.getElementById('restart-btn').addEventListener('click', () => {
+  resultScreen.classList.add('hidden');
+  formScreen.classList.remove('hidden');
+  formScreen.reset();
+  photoPreview.innerHTML = '';
+  uploadedPhotoData = null;
 });
 
 // ====== Service Worker registrace ======
