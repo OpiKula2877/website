@@ -27,13 +27,13 @@ fotoInput.addEventListener('change', (e) => {
 
 // ====== Hlášky během hledání ======
 const messages = [
-  { main: "Hledám dvojče...", sub: "Procházím globální databázi obličejů" },
-  { main: "Analyzuji rysy obličeje...", sub: "Porovnávám tvar očí, nosu a brady" },
-  { main: "Vybírám z několika možností...", sub: "Nalezeno 14 potenciálních shod" },
-  { main: "Porovnávám koníčky a zájmy...", sub: "Hledám shodu v osobnosti" },
-  { main: "Kontroluji geografickou blízkost...", sub: "Rozšiřuji okruh hledání" },
-  { main: "Počítám procentuální shodu...", sub: "Spouštím algoritmus DvojčeMatch™" },
-  { main: "Téměř hotovo...", sub: "Finalizuji výsledek" },
+  { main: "Hledám dvojče...", sub: "Procházím globální databázi obličejů (a tvoji mámu omylem)" },
+  { main: "Analyzuji rysy obličeje...", sub: "Tvůj nos právě prochází bezpečnostní kontrolou" },
+  { main: "Vybírám z několika možností...", sub: "Nalezeno 14 potenciálních shod, 3 z nich jsou tvoje selfie" },
+  { main: "Porovnávám koníčky a zájmy...", sub: "Kontroluji, kdo další má rád ležení na gauči" },
+  { main: "Kontroluji geografickou blízkost...", sub: "Možná žije přes ulici, možná na jiném kontinentu, kdo ví" },
+  { main: "Počítám procentuální shodu...", sub: "Algoritmus DvojčeMatch™ se právě hádá s kávovarem" },
+  { main: "Téměř hotovo...", sub: "Žehlím poslední pixely k naprosté dokonalosti" },
 ];
 
 // ====== Odpočítávadlo ======
@@ -126,12 +126,6 @@ function buildResultHTML(data) {
     <img class="match-photo" src="${STATIC_MATCH_PHOTO}" alt="Dvojče">
     <div class="match-percent">99.67%</div>
     <div class="match-label">shoda</div>
-    <div class="match-info">
-      <div><b>Jméno:</b> ${data.jmeno}</div>
-      <div><b>Věk:</b> ${data.vek}</div>
-      <div><b>Lokace:</b> ${data.mesto}, ${data.stat}</div>
-      <div><b>Koníčky:</b> ${data.koniky}</div>
-    </div>
   </div>
 </div>
 </body>
