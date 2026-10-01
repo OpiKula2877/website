@@ -1,535 +1,364 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-title-cs="Projekty — Samuel Pelc">
+
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Projects</title>
-    <meta name="description" content="Přehled projektů Samuela Pelce — webové projekty, experimenty a školní práce.">
-    <meta name="keywords" content="projekty, portfolio, Samuel Pelc, web projects, HTML, CSS, JavaScript, OpiKula">
-    <meta name="author" content="Samuel Pelc">
-    <meta name="robots" content="index, follow">
-    <link rel="canonical" href="projects.html">
-    <meta property="og:title" content="Projects — Samuel Pelc">
-    <meta property="og:description" content="Přehled projektů Samuela Pelce — webové projekty, experimenty a školní práce.">
-    <meta property="og:type" content="website">
-    <meta property="og:url" content="projects.html">
-    <meta property="og:image" content="OK.png">
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Projects — Samuel Pelc">
-    <meta name="twitter:description" content="Přehled projektů Samuela Pelce — webové projekty, experimenty a školní práce.">
-    <meta name="twitter:image" content="OK.png">
-    <link rel="stylesheet" href="styles.css">
-    <link rel="shortcut icon" href="favicon.ico" type="image/x-icon">
-
-    <style>
-        :root {
-            --bg-color: #f8f9fa; /* off-white */
-            --text-color: #111111; /* black */
-            --accent-blue: #0056b3;
-            --accent-red: #d90429;
-            --nav-bg: rgba(248, 249, 250, 0.95);
-        }
-
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-        }
-
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-color);
-            line-height: 1.6;
-        }
-
-        html, body {
-        &::-webkit-scrollbar {
-            display: none;
-        }
-        scrollbar-width: none;
-        -ms-overflow-style: none;
-        }
-
-        h1, h2, h3, h4, h5, h6, .nav-links a {
-            font-family: 'Segoe UI', serif;
-        }
-
-        /* Header & Nav */
-        header {
-            position: sticky;
-            top: 0;
-            background: var(--nav-bg);
-            backdrop-filter: blur(10px);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            padding: 1rem 5%;
-            z-index: 1000;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
-        }
-
-        .logo-container {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-            cursor: pointer;
-            text-decoration: none;
-            color: var(--text-color);
-        }
-
-        .logo {
-            width: 40px;
-            height: 40px;
-            border-radius: 50%;
-            transition: transform 0.5s ease-in-out;
-        }
-
-        .logo:hover {
-            transform: rotate(360deg);
-        }
-
-        /* Spin animation for Easter Egg */
-        .spin-fast {
-            animation: spin 0.5s infinite linear;
-        }
-
-        @keyframes spin {
-            100% { transform: rotate(360deg); }
-        }
-
-        .nav-links {
-            display: flex;
-            list-style: none;
-            gap: 2rem;
-        }
-
-        .menu-toggle {
-            display: none;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            gap: 5px;
-            width: 44px;
-            height: 44px;
-            border: none;
-            background: transparent;
-            cursor: pointer;
-        }
-
-        .menu-toggle span {
-            display: block;
-            width: 24px;
-            height: 3px;
-            border-radius: 999px;
-            background: var(--text-color);
-            transition: transform 0.3s ease, opacity 0.3s ease;
-        }
-
-        .menu-toggle[aria-expanded="true"] span:nth-child(1) {
-            transform: translateY(8px) rotate(45deg);
-        }
-
-        .menu-toggle[aria-expanded="true"] span:nth-child(2) {
-            opacity: 0;
-        }
-
-        .menu-toggle[aria-expanded="true"] span:nth-child(3) {
-            transform: translateY(-8px) rotate(-45deg);
-        }
-
-        .nav-links a {
-            text-decoration: none;
-            color: var(--text-color);
-            font-size: 1.1rem;
-            position: relative;
-            transition: all 0.3s ease;
-            display: inline-block;
-        }
-
-        .nav-links a::after {
-            content: '';
-            position: absolute;
-            width: 0%;
-            height: 2px;
-            bottom: -5px;
-            left: 0;
-            background-color: var(--accent-blue);
-            transition: width 0.3s ease;
-        }
-
-        .nav-links a:hover::after {
-            width: 100%;
-        }
-
-        .nav-links a:hover {
-            color: var(--accent-blue);
-        }
-
-        /* Active State */
-        .nav-links a.active {
-            transform: scale(1.15);
-            color: var(--accent-blue);
-        }
-
-        .nav-links a.active::after {
-            width: 100%;
-            background-color: var(--accent-red);
-        }
-
-        /* Main Content */
-        main {
-            padding: 4rem 5%;
-            max-width: 1200px;
-            margin: 0 auto;
-        }
-
-        h1 {
-            font-size: 3rem;
-            margin-bottom: 1.5rem;
-            text-align: center;
-        }
-
-        h2 {
-            font-size: 2rem;
-            margin-bottom: 1rem;
-            color: var(--accent-blue);
-            position: relative;
-            display: inline-block;
-        }
-
-        /* Animations */
-        .interactive-element {
-            transition: transform 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275), box-shadow 0.3s ease;
-        }
-
-        .interactive-element:hover {
-            transform: scale(1.05) translateY(-5px);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
-        }
-
-        /* About Page - Accordion */
-        .accordion {
-            margin: 2rem 0;
-        }
-
-        .accordion-item {
-            border: 1px solid #ddd;
-            border-radius: 8px;
-            margin-bottom: 1rem;
-            overflow: hidden;
-            background: #fff;
-            transition: transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        .accordion-item:hover {
-            transform: scale(1.02);
-            box-shadow: 0 5px 15px rgba(0,0,0,0.08);
-        }
-
-        .accordion-header {
-            background: #fff;
-            padding: 1.5rem;
-            cursor: pointer;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            font-weight: 600;
-            font-size: 1.1rem;
-        }
-
-        .accordion-header i {
-            transition: transform 0.3s ease;
-            color: var(--accent-blue);
-        }
-
-        .accordion-header.active i {
-            transform: rotate(720deg);
-        }
-
-        .accordion-content {
-            max-height: 0;
-            overflow: hidden;
-            transition: max-height 0.4s ease-out, padding 0.4s ease;
-            background: #fafafa;
-            padding: 0 1.5rem;
-        }
-
-        .accordion-content.expanded {
-            padding: 1.5rem;
-        }
-
-        /* Skills Grid */
-        .skills-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 2rem;
-            margin-top: 2rem;
-        }
-
-        .skill-card {
-            background: #fff;
-            padding: 2rem 1.5rem;
-            border-radius: 12px;
-            text-align: center;
-        }
-
-        .skill-card i {
-            font-size: 3rem;
-            margin-bottom: 1rem;
-            color: var(--text-color);
-        }
-
-        .skill-card h3 {
-            margin-bottom: 0.5rem;
-        }
-
-        .skill-card p {
-            font-size: 0.9rem;
-            color: #555;
-        }
-
-        .skill-card:nth-child(even) {
-            border-top-color: var(--accent-red);
-        }
-
-        /* Contact */
-        .contact-container {
-            max-width: 600px;
-            margin: 0 auto;
-            background: #fff;
-            padding: 3rem;
-            border-radius: 12px;
-            box-shadow: 0 10px 30px rgba(0,0,0,0.05);
-            text-align: center;
-        }
-
-        .contact-links {
-            display: flex;
-            flex-direction: column;
-            gap: 1.5rem;
-            margin-top: 2rem;
-        }
-
-        .contact-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 0.5rem;
-            width: calc(100% + 1.6rem);
-            margin-inline: -0.8rem;
-            padding: 0.8rem 1.2rem;
-            background: var(--bg-color);
-            border-radius: 8px;
-            text-decoration: none;
-            color: var(--text-color);
-            font-weight: 600;
-            transition: all 0.3s ease;
-            border: 1px solid transparent;
-        }
-
-        .contact-link:hover {
-            background: #fff;
-            border-color: var(--accent-blue);
-            color: var(--accent-blue);
-            transform: translateX(10px);
-        }
-
-        .contact-link.red-accent:hover {
-            border-color: var(--accent-red);
-            color: var(--accent-red);
-        }
-
-        .link {
-            text-decoration: none;
-            color: var(--accent-blue);
-            font-weight: 600;
-        }
-
-        /* Projects grid */
-        .projects-container {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-            gap: 1.5rem;
-            width: 100%;
-            max-width: 900px;
-            padding: 0 2rem;
-            margin: 0 auto;
-            justify-items: stretch;
-        }
-
-        .project-block {
-            display: flex;
-            text-decoration: none;
-            color: inherit;
-            border: 2px solid #ddd;
-            border-radius: 12px;
-            padding: 28px 20px;
-            transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-            background-color: #fff;
-            box-shadow: 0 4px 10px rgba(0, 0, 0, 0.07);
-            align-items: center;
-            justify-content: center;
-        }
-
-        .project-block:hover {
-            transform: scale(1.06) translateY(-3px);
-            box-shadow: 0 10px 24px rgba(0, 0, 0, 0.13);
-            border-color: currentColor;
-        }
-
-        .block-content {
-            width: 100%;
-        }
-
-        .block-content h2 {
-            margin: 0;
-            font-size: 1.25rem;
-            text-align: center;
-            /* color set by JS rainbow script */
-        }
-
-        @media (max-width: 768px) {
-            header {
-                flex-wrap: wrap;
-                gap: 0.5rem;
-            }
-
-            .menu-toggle {
-                display: flex;
-            }
-
-            .site-nav {
-                width: 100%;
-                max-height: 0;
-                overflow: hidden;
-                transition: max-height 0.3s ease;
-            }
-
-            .site-nav.nav-open {
-                max-height: 320px;
-            }
-
-            .nav-links {
-                flex-direction: column;
-                align-items: flex-start;
-                gap: 0.75rem;
-                padding: 0.5rem 0 1rem;
-            }
-
-            .nav-links a {
-                font-size: 1rem;
-                width: 100%;
-            }
-
-            .nav-links a.active {
-                transform: none;
-            }
-
-            .projects-container {
-                grid-template-columns: 1fr 1fr;
-                padding: 0 1rem;
-                gap: 1rem;
-            }
-        }
-
-        @media (max-width: 480px) {
-            .projects-container {
-                grid-template-columns: 1fr;
-            }
-        }
-    </style>
-
-</head>
-<body>
-    <header>
-        <img src="OK.png" alt="OK Logo" class="logo" id="brand-logo">
-        <button class="menu-toggle" type="button" aria-label="Open navigation menu" aria-expanded="false"
-            aria-controls="main-navigation">
-            <span></span>
-            <span></span>
-            <span></span>
-        </button>
-        <nav id="main-navigation" class="site-nav" aria-label="Main navigation">
-            <ul class="nav-links" role="list">
-                <li><a href="index.html">Home</a></li>
-                <li><a href="about.html">About Me</a></li>
-                <li><a href="projects.html" class="active">Projects</a></li>
-                <li><a href="contact.html">Contact</a></li>
-            </ul>
-        </nav>
-    </header>
-    <div
-        style="display: flex; flex-direction: column; align-items: center; justify-content: center; min-height: 60vh; text-align: center;">
-        <h1 class="interactive-element">Projects</h1>
-        <div class="projects-container">
-            <a href="projects/archzakon.html" class="project-block">
-            <div class="block-content">
-                <h2>Archimedův Zákon</h2>
-            </div>
-            </a>
-            <a href="https://opikula2877.github.io/novir/" class="project-block">
-            <div class="block-content">
-                <h2>Fake malware website</h2>
-            </div>
-            </a>
-            <a href="projects/FMWAI/" class="project-block">
-            <div class="block-content">
-                <h2>Fake malware website (AI)</h2>
-            </div>
-            </a>
-            <a href="projects/pomeranc/" class="project-block">
-            <div class="block-content">
-                <h2>Orange</h2>
-            </div>
-            </a>
-            <a href="https://opikula2877.github.io/2ite-web-pelc-samuel/" class="project-block">
-            <div class="block-content">
-                <h2>Jára Cimrman</h2>
-            </div>
-            </a>
-            <a href="projects/DaVinci7/" class="project-block">
-            <div class="block-content">
-                <h2>DaVinci 7</h2>
-            </div>
-            </a>
-            <a href="projects/PS/" class="project-block">
-            <div class="block-content">
-                <h2>Petr a Sam</h2>
-            </div>
-            </a>
-            <a href="projects/IDONTHAVELICANCE/" class="project-block">
-            <div class="block-content">
-                <h2>IDHAL</h2>
-            </div>
-            </a>
-            <a href="https://cisco.opikula.dev/" class="project-block">
-            <div class="block-content">
-                <h2>CISCO - CCNA1</h2>
-            </div>
-            </a>
-            <a href="projects/TWINAI/" class="project-block">
-            <div class="block-content">
-                <h2>TWINAI</h2>
-            </div>
-            </a>
-        </div>
-    </div>
-    <script src="script.js"></script>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="theme-color" content="#F2F3F8">
     <script>
-        // Rainbow colors for project blocks - automatically based on count
+        /* Apply the saved (or system) theme and language before first paint, so nothing flashes. */
         (function () {
-            const blocks = document.querySelectorAll('.project-block');
-            const count = blocks.length;
-            blocks.forEach((block, i) => {
-                // Hue from 0 (red) to 270 (violet), evenly distributed
-                const hue = Math.round((i / (count - 1)) * 270);
-                const h2 = block.querySelector('h2');
-                if (h2) {
-                    h2.style.color = `hsl(${hue}, 85%, 38%)`;
-                }
-            });
+            var d = document.documentElement, t = null, l = null;
+            try { t = localStorage.getItem('theme'); l = localStorage.getItem('lang'); } catch (e) { }
+            if (t !== 'light' && t !== 'dark') t = matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+            if (l !== 'cs' && l !== 'en') l = /^(cs|sk)/i.test(navigator.language || '') ? 'cs' : 'en';
+            d.dataset.theme = t;
+            d.lang = l;
+            if ('PageSwapEvent' in window) d.classList.add('vt');
+            var m = document.querySelector('meta[name="theme-color"]');
+            if (m) m.content = t === 'dark' ? '#0A0D26' : '#F2F3F8';
         })();
     </script>
+
+    <title>Projects — Samuel Pelc</title>
+    <meta name="description" content="Projects by Samuel Pelc: websites, web apps and experiments, some made for school and some just for fun."
+        data-cs="Projekty Samuela Pelce: weby, webové aplikace a experimenty, některé vznikly do školy a jiné jen pro zábavu.">
+    <meta name="author" content="Samuel Pelc">
+    <meta name="robots" content="index, follow">
+    <meta name="color-scheme" content="light dark">
+    <link rel="canonical" href="https://opikula.dev/projects.html">
+
+    <meta property="og:title" content="Projects — Samuel Pelc">
+    <meta property="og:description" content="Projects by Samuel Pelc: websites, web apps and experiments, some made for school and some just for fun.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://opikula.dev/projects.html">
+    <meta property="og:image" content="https://opikula.dev/assets/og.png">
+    <meta property="og:image:width" content="1200">
+    <meta property="og:image:height" content="630">
+    <meta property="og:locale" content="en_US">
+    <meta property="og:locale:alternate" content="cs_CZ">
+
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="Projects — Samuel Pelc">
+    <meta name="twitter:description" content="Projects by Samuel Pelc: websites, web apps and experiments, some made for school and some just for fun.">
+    <meta name="twitter:image" content="https://opikula.dev/assets/og.png">
+
+    <link rel="icon" href="favicon.ico" sizes="any">
+    <link rel="apple-touch-icon" href="assets/logo-192.png">
+    <link rel="preload" href="assets/fonts/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin>
+    <link rel="stylesheet" href="styles.css">
+    <script src="script.js" defer></script>
+</head>
+
+<body>
+    <a class="skip-link" href="#main"><span lang="en">Skip to content</span><span lang="cs">Přejít na obsah</span></a>
+
+    <header class="site-header">
+        <div class="wrap header-inner">
+            <a class="brand" href="index.html">
+                <img class="brand-logo" src="assets/logo-96.png" srcset="assets/logo-96.png 1x, assets/logo-192.png 2x" width="48" height="48" alt="">
+                <span class="sr-only"><span lang="en">Samuel Pelc, home</span><span lang="cs">Samuel Pelc, domů</span></span>
+            </a>
+
+            <nav class="nav" id="site-nav">
+                <a href="index.html"><span lang="en">Home</span><span lang="cs">Domů</span></a>
+                <a href="about.html"><span lang="en">About</span><span lang="cs">O mně</span></a>
+                <a href="projects.html" aria-current="page"><span lang="en">Projects</span><span lang="cs">Projekty</span></a>
+                <a href="contact.html"><span lang="en">Contact</span><span lang="cs">Kontakt</span></a>
+            </nav>
+
+            <div class="controls">
+                <div class="lang" role="group" aria-label="Language / Jazyk">
+                    <button type="button" data-lang="en" aria-pressed="true" aria-label="English">EN</button>
+                    <button type="button" data-lang="cs" aria-pressed="false" aria-label="Čeština">CS</button>
+                </div>
+                <button type="button" class="icon-btn theme-toggle" aria-label="Switch to dark mode">
+                    <svg class="icon-moon" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.8A9 9 0 1 1 11.2 3a7 7 0 0 0 9.8 9.8z"/></svg>
+                    <svg class="icon-sun" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M2 12h2M20 12h2M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4"/></svg>
+                </button>
+                <button type="button" class="icon-btn menu-toggle" aria-label="Open navigation menu" aria-expanded="false" aria-controls="site-nav">
+                    <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" aria-hidden="true"><path class="bar bar-1" d="M4 8h16"/><path class="bar bar-2" d="M4 16h16"/></svg>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <main id="main">
+        <section class="wrap page-head">
+            <h1 class="display" data-split>
+                <span lang="en">Projects</span>
+                <span lang="cs">Projekty</span>
+            </h1>
+            <p class="lead">
+                <span lang="en">Websites, apps and experiments. Some were made for school, some just for fun.</span>
+                <span lang="cs">Weby, aplikace a experimenty. Některé vznikly do školy, jiné jen pro zábavu.</span>
+            </p>
+        </section>
+
+        <section class="wrap" style="padding-bottom: clamp(72px, 9vw, 128px);">
+            <ul class="cards" role="list">
+                <li>
+                    <a class="card" href="
+                projects/TWINAI/
+                ">
+                        
+                <span class="card-media"><img src="assets/projects/twinai.jpg" width="800" height="500" loading="lazy" decoding="async" alt=""></span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                DvojčeFinder
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                A just-for-fun web app that “finds your twin”. You can install it, and nothing is stored.
+                </span>
+                                <span lang="cs">
+                Zábavná webová aplikace, která „najde tvé dvojče“. Můžeš si ji nainstalovat a nic se neukládá.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="card" href="
+                projects/DaVinci7/
+                ">
+                        
+                <span class="card-media"><img src="assets/projects/davinci7.jpg" width="800" height="500" loading="lazy" decoding="async" alt=""></span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                DaVinci 7
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                A drawing canvas in the browser with a pen, an eraser and a colour palette. Made together with @ice-saturn.
+                </span>
+                                <span lang="cs">
+                Kreslicí plátno v prohlížeči s perem, gumou a paletou barev. Vytvořeno společně s @ice-saturn.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="card" href="
+                projects/pomeranc/
+                ">
+                        
+                <span class="card-media"><img src="assets/projects/orange.jpg" width="800" height="500" loading="lazy" decoding="async" alt=""></span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                Orange Atlas
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                A single-page website about oranges: flavour, cultivation, nutrition and a gallery.
+                </span>
+                                <span lang="cs">
+                Jednostránkový web o pomerančích: chuť, pěstování, výživa a galerie.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="card" href="
+                projects/archzakon.html
+                ">
+                        
+                <span class="card-media"><img src="assets/projects/archimedes.jpg" width="800" height="500" loading="lazy" decoding="async" alt=""></span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                <span lang="en">Archimedes’ principle</span><span lang="cs">Archimédův zákon</span>
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                A study page for 7th-grade physics, with the formula, worked examples and a quiz.
+                </span>
+                                <span lang="cs">
+                Výuková stránka z fyziky pro 7. třídu se vzorcem, příklady a kvízem.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="card" href="
+                projects/IDONTHAVELICANCE/
+                ">
+                        
+                <span class="card-media"><img src="assets/projects/idhal.jpg" width="800" height="500" loading="lazy" decoding="async" alt=""></span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                IDHAL
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                Eng-Practice: English practice with listening exercises for levels B1 and B2.
+                </span>
+                                <span lang="cs">
+                Eng-Practice: procvičování angličtiny s poslechovými cvičeními pro úrovně B1 a B2.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="card" href="
+                https://cisco.opikula.dev/
+                ">
+                        
+                <span class="card-media"><img src="assets/projects/cisco.jpg" width="800" height="500" loading="lazy" decoding="async" alt=""></span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                Cisco CCNA 1
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                My notes for the Cisco CCNA 1 networking course.
+                </span>
+                                <span lang="cs">
+                Moje poznámky ke kurzu počítačových sítí Cisco CCNA 1.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="card" href="
+                projects/PS/
+                ">
+                        
+                <span class="card-media"><img src="assets/projects/ps.jpg" width="800" height="500" loading="lazy" decoding="async" alt=""></span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                Petr a Sam
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                A small multi-page website with a gallery. Made together with @ice-saturn.
+                </span>
+                                <span lang="cs">
+                Malý vícestránkový web s galerií. Vytvořeno společně s @ice-saturn.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="card" href="
+                https://opikula2877.github.io/novir/
+                ">
+                        
+                <span class="card-media"><img src="assets/projects/novir.jpg" width="800" height="500" loading="lazy" decoding="async" alt=""></span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                <span lang="en">Fake malware website</span><span lang="cs">Falešná malwarová stránka</span>
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                A fake virus-warning page, built as a harmless parody.
+                </span>
+                                <span lang="cs">
+                Falešná stránka s varováním před virem, vytvořená jako neškodná parodie.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="card" href="
+                projects/FMWAI/
+                ">
+                        
+                <span class="card-media"><img src="assets/projects/fmwai.jpg" width="800" height="500" loading="lazy" decoding="async" alt=""></span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                <span lang="en">Fake malware website (AI)</span><span lang="cs">Falešná malwarová stránka (AI)</span>
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                The same idea, built with the help of AI.
+                </span>
+                                <span lang="cs">
+                Stejný nápad, vytvořený s pomocí AI.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+                <li>
+                    <a class="card" href="
+                https://opikula2877.github.io/2ite-web-pelc-samuel/
+                ">
+                        
+                <span class="card-media card-media--empty" aria-hidden="true">JC</span>
+                        <span class="card-body">
+                            <span class="card-top">
+                                <span class="card-title">
+                Jára Cimrman
+                </span>
+                                
+                <span class="card-arrow" aria-hidden="true"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
+                            </span>
+                            <span class="card-desc">
+                                <span lang="en">
+                A school website about the fictional Czech genius Jára Cimrman.
+                </span>
+                                <span lang="cs">
+                Školní web o fiktivním českém géniovi Járovi Cimrmanovi.
+                </span>
+                            </span>
+                        </span>
+                    </a>
+                </li>
+            </ul>
+        </section>
+    </main>
+
+    <footer class="site-footer">
+        <div class="wrap">
+            <div class="footer-inner">
+                <p>© 2026 Samuel Pelc</p>
+                <p>opikula.dev</p>
+            </div>
+        </div>
+    </footer>
 </body>
+
 </html>
