@@ -843,16 +843,53 @@
             logo.parentElement.appendChild(bubble);
             tone(660, 0.1, { type: 'square', gain: 0.04, filter: 1500 });
             tone(880, 0.12, { type: 'square', gain: 0.04, filter: 1500, at: 0.1 });
-            // Tip the OK on its side: it stands up as the OK guy, hops and waves
+            // The OK stands up and its K stretches into arms and legs: the OK guy
             logo.classList.add('is-guy');
+            stretch(1, 650);
             bubble.style.opacity = '0';
             setTimeout(() => guyDance(bubble), 650);
             setTimeout(() => {
                 bubble.remove();
                 logo.classList.remove('is-guy');
-                setTimeout(() => active.delete('guy'), 600);
+                stretch(0, 600);
+                setTimeout(() => active.delete('guy'), 650);
             }, 4300);
         });
+    }
+
+    // 0 = the plain OK mark, 1 = the OK guy. Endpoints in the upright drawing.
+    const SHAPES = [
+        { arms: [78, 162], legL: [86, 186], legR: [154, 186], shift: 12 },
+        { arms: [58, 182], legL: [83, 206], legR: [157, 206], shift: 0 }
+    ];
+    let stretchNow = 0;
+
+    function stretch(target, duration) {
+        if (!logo) return;
+        const body = logo.querySelector('.g-body');
+        const arms = logo.querySelector('.g-arms');
+        const legL = logo.querySelector('.g-leg-l');
+        const legR = logo.querySelector('.g-leg-r');
+        if (!body || !arms || !legL || !legR) return;
+        const from = stretchNow;
+        const start = performance.now();
+        const lerp = (a, b, t) => a + (b - a) * t;
+        const ease = (t) => 1 + 2.4 * Math.pow(t - 1, 3) + 1.4 * Math.pow(t - 1, 2); // ease-out with a small overshoot
+        const frame = (now) => {
+            const p = Math.min(1, (now - start) / duration);
+            const t = lerp(from, target, ease(p));
+            stretchNow = t;
+            const [a, b] = SHAPES;
+            arms.setAttribute('x1', lerp(a.arms[0], b.arms[0], t));
+            arms.setAttribute('x2', lerp(a.arms[1], b.arms[1], t));
+            legL.setAttribute('x2', lerp(a.legL[0], b.legL[0], t));
+            legL.setAttribute('y2', lerp(a.legL[1], b.legL[1], t));
+            legR.setAttribute('x2', lerp(a.legR[0], b.legR[0], t));
+            legR.setAttribute('y2', lerp(a.legR[1], b.legR[1], t));
+            body.setAttribute('transform', `translate(0 ${lerp(a.shift, b.shift, t)})`);
+            if (p < 1) requestAnimationFrame(frame);
+        };
+        requestAnimationFrame(frame);
     }
 
     function guyDance(bubble) {
