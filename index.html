@@ -42,9 +42,9 @@
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="apple-touch-icon" href="assets/logo-192.png">
     <link rel="preload" href="assets/fonts/CascadiaCode.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
-    <script src="eggs.js" defer></script>
+    <link rel="stylesheet" href="styles.css?v=3">
+    <script src="script.js?v=3" defer></script>
+    <script src="eggs.js?v=3" defer></script>
 
     <script type="application/ld+json">
     {
@@ -118,7 +118,8 @@
                 <div class="logo-big" id="brand-logo">
                     <svg class="ok-guy-svg" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
                         <rect width="240" height="240" rx="44" fill="#000"/>
-                        <g fill="#fff">
+                        <!-- The OK mark. Drawn standing up (O = head, K = arms and legs) and turned on its side to read "OK". -->
+                        <g class="g-mark" fill="#fff">
                             <!-- O: the head -->
                             <path class="g-head" fill-rule="evenodd" d="M120 30a42 42 0 1 1 0 84a42 42 0 1 1 0-84zm0 16a26 26 0 1 0 0 52a26 26 0 1 0 0-52z"/>
                             <!-- K stem: shoulders and arms -->
@@ -178,7 +179,7 @@
                     <div class="term" id="term">
                         <div class="term-out" id="term-out" aria-live="polite"></div>
                         <form class="term-form" id="term-form" autocomplete="off">
-                            <label class="prompt" for="term-input">OpiKula</label>
+                            <label class="prompt" for="term-input">SP@OK<b>:~$</b></label>
                             <input class="term-input" id="term-input" type="text" spellcheck="false" autocapitalize="off" enterkeyhint="send">
                         </form>
                     </div>

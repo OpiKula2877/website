@@ -48,10 +48,6 @@
 .mc-face.bk{filter:brightness(.7)}
 .mc-face.bt{filter:brightness(.55)}
 @keyframes mc-spin{from{transform:rotateX(-24deg) rotateY(0)}to{transform:rotateX(-24deg) rotateY(360deg)}}
-.mc-item{--s:64px;position:absolute;left:50%;top:60%;margin:-32px 0 0 -32px;animation:mc-bob 1.6s ease-in-out infinite}
-.mc-item .mc-cube{animation-duration:4s}
-@keyframes mc-bob{50%{transform:translateY(-10px)}}
-.mc-xp{position:absolute;left:50%;top:30%;transform:translateX(-50%);color:#7dff3c;font:700 18px/1 "Cascadia Code",monospace;text-shadow:2px 2px 0 #1a3d00;pointer-events:none;white-space:nowrap}
 .mc-bit{position:fixed;z-index:9993;pointer-events:none;image-rendering:pixelated}
 
 .egg-night{position:fixed;inset:0;z-index:9996;overflow:hidden;background:#000;opacity:0;cursor:pointer}
@@ -330,27 +326,61 @@
             side: pixelTexture((x, y) => (y < edge[x] ? pick(GRASS) : pick(DIRT))),
             dirt: pixelTexture(() => pick(DIRT))
         };
-        // Crack stages: one random walk from the middle, revealed bit by bit
-        const path = [];
-        for (let b = 0; b < 5; b++) {
-            let x = 8, y = 8;
-            for (let i = 0; i < 12; i++) {
-                x = Math.max(0, Math.min(15, x + Math.round(rand(-1, 1))));
-                y = Math.max(0, Math.min(15, y + Math.round(rand(-1, 1))));
-                path.push([x, y]);
+        cracks = crackStages();
+        return tex;
+    }
+
+    // The 10 destroy stages, like Minecraft's destroy_stage_0..9: a crack
+    // grows from the middle in straight pixel lines and branches until the
+    // face is mostly broken. Each stage shows more of the same growth.
+    function crackStages() {
+        const SIZES = [3, 7, 12, 19, 28, 40, 56, 76, 100, 128];
+        const DIRS = [[1, 0], [-1, 0], [0, 1], [0, -1]];
+        const taken = new Set();
+        const order = [];
+        const add = (x, y) => {
+            const k = `${x},${y}`;
+            if (x < 0 || y < 0 || x > 15 || y > 15 || taken.has(k)) return false;
+            taken.add(k);
+            order.push([x, y]);
+            return true;
+        };
+        add(7, 7);
+        add(8, 7);
+        add(8, 8);
+        const tips = [{ x: 8, y: 8, d: pick(DIRS) }, { x: 7, y: 7, d: pick(DIRS) }];
+        let guard = 0;
+        while (order.length < SIZES[9] && guard++ < 5000) {
+            // Sometimes start a new branch from a random cracked pixel
+            if (Math.random() < 0.18 || !tips.length) {
+                const [bx, by] = pick(order);
+                tips.push({ x: bx, y: by, d: pick(DIRS) });
+            }
+            const i = Math.floor(Math.random() * tips.length);
+            const tip = tips[i];
+            if (Math.random() < 0.3) {
+                // Turn left or right, never straight back
+                tip.d = tip.d[0] ? pick([[0, 1], [0, -1]]) : pick([[1, 0], [-1, 0]]);
+            }
+            const nx = tip.x + tip.d[0];
+            const ny = tip.y + tip.d[1];
+            if (add(nx, ny)) {
+                tip.x = nx;
+                tip.y = ny;
+            } else {
+                tips.splice(i, 1);
             }
         }
-        path.sort(() => Math.random() - 0.5).sort((a, b) => Math.hypot(a[0] - 8, a[1] - 8) - Math.hypot(b[0] - 8, b[1] - 8));
-        cracks = [];
-        for (let s = 1; s <= 9; s++) {
+        return SIZES.map((n) => {
             const c = document.createElement('canvas');
             c.width = c.height = 16;
             const g = c.getContext('2d');
-            g.fillStyle = 'rgba(0,0,0,.72)';
-            path.slice(0, Math.round(path.length * s / 9)).forEach(([x, y]) => g.fillRect(x, y, 1, 1));
-            cracks.push(c.toDataURL());
-        }
-        return tex;
+            order.slice(0, n).forEach(([x, y], k) => {
+                g.fillStyle = k % 5 === 0 ? 'rgba(0,0,0,.5)' : 'rgba(0,0,0,.78)';
+                g.fillRect(x, y, 1, 1);
+            });
+            return c.toDataURL();
+        });
     }
 
     function cube(size) {
@@ -385,33 +415,79 @@
         tone(220, 0.15, { type: 'square', gain: 0.05, filter: 1200 });
         tone(330, 0.15, { type: 'square', gain: 0.05, filter: 1200, at: 0.1 });
 
-        let stage = 0;
-        let timer = null;
+        // Mining works like in Minecraft: hold the button and the crack runs
+        // through its 10 stages; let go and the block heals.
+        const BREAK_MS = 1100;
+        let mining = false;
+        let startedAt = 0;
+        let shownStage = -1;
+        let lastDig = 0;
+        let broken = false;
 
-        const hit = () => {
-            stage += 1;
-            cubeEl.style.setProperty('--crack', `url(${cracks[Math.min(stage, 9) - 1]})`);
-            noise(0.07, { type: 'bandpass', freq: rand(500, 900), gain: 0.35 });
-            btn.animate([{ transform: 'scale(1)' }, { transform: 'scale(.96)' }, { transform: 'scale(1)' }], { duration: 110 });
-            if (stage >= 10) breakBlock();
+        const showStage = (s) => {
+            if (s === shownStage) return;
+            shownStage = s;
+            if (s < 0) cubeEl.style.removeProperty('--crack');
+            else cubeEl.style.setProperty('--crack', `url(${cracks[s]})`);
+        };
+
+        const crumbs = () => {
+            const r = btn.getBoundingClientRect();
+            for (let i = 0; i < 3; i++) {
+                const b = el('i', 'mc-bit');
+                const s = rand(4, 7);
+                b.style.cssText = `left:${r.left + r.width / 2 + rand(-r.width / 4, r.width / 4)}px;top:${r.top + r.height * 0.35}px;width:${s}px;height:${s}px;background:${pick(Math.random() < 0.3 ? GRASS : DIRT)}`;
+                document.body.appendChild(b);
+                b.animate([
+                    { transform: 'translate(0,0)', opacity: 1 },
+                    { transform: `translate(${rand(-40, 40)}px, ${rand(30, 90)}px)`, opacity: 0 }
+                ], { duration: rand(400, 650), easing: 'ease-in' }).onfinish = () => b.remove();
+            }
+        };
+
+        const loop = (now) => {
+            if (!mining || broken) return;
+            const p = (now - startedAt) / BREAK_MS;
+            if (p >= 1) { breakBlock(); return; }
+            showStage(Math.min(9, Math.floor(p * 10)));
+            if (now - lastDig > 230) {
+                lastDig = now;
+                noise(0.07, { type: 'bandpass', freq: rand(500, 900), gain: 0.35 });
+                cubeEl.animate([{ translate: '0 0' }, { translate: '0 3px' }, { translate: '0 0' }], { duration: 120 });
+                crumbs();
+            }
+            requestAnimationFrame(loop);
         };
 
         const startMining = (event) => {
             if (event) event.preventDefault();
-            if (timer) return;
-            hit();
-            timer = setInterval(hit, 140);
+            if (mining || broken) return;
+            mining = true;
+            startedAt = performance.now();
+            lastDig = 0;
+            cubeEl.style.animationPlayState = 'paused';
+            requestAnimationFrame(loop);
         };
-        const stopMining = () => { clearInterval(timer); timer = null; };
+        const stopMining = () => {
+            if (!mining) return;
+            mining = false;
+            cubeEl.style.animationPlayState = '';
+            showStage(-1);
+        };
 
         btn.addEventListener('pointerdown', startMining);
         ['pointerup', 'pointerleave', 'pointercancel'].forEach((e) => btn.addEventListener(e, stopMining));
         btn.addEventListener('keydown', (event) => {
-            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); hit(); }
+            if (event.key === 'Enter' || event.key === ' ') { event.preventDefault(); startMining(); }
         });
+        btn.addEventListener('keyup', (event) => {
+            if (event.key === 'Enter' || event.key === ' ') stopMining();
+        });
+        btn.addEventListener('contextmenu', (event) => event.preventDefault());
 
         function breakBlock() {
-            stopMining();
+            broken = true;
+            mining = false;
             const r = btn.getBoundingClientRect();
             noise(0.3, { freq: 700, gain: 0.5 });
             for (let i = 0; i < 26; i++) {
@@ -428,39 +504,14 @@
             }
             btn.remove();
 
-            // The dropped item
-            const { btn: item } = cube(64);
-            item.classList.add('mc-item');
-            item.setAttribute('aria-label', L('Pick up the block', 'Sebrat blok'));
-            const xp = el('span', 'mc-xp', '+1 XP');
-            const wrap = logo ? holder : document.body;
-            if (!logo) {
-                item.style.position = 'fixed';
-                item.style.left = `${r.left + r.width / 2}px`;
-                item.style.top = `${r.top + r.height / 2}px`;
-                xp.style.position = 'fixed';
-                xp.style.left = `${r.left + r.width / 2}px`;
-                xp.style.top = `${r.top}px`;
-            }
-            item.style.setProperty('--s', '64px');
-            wrap.append(item, xp);
-            xp.animate([{ opacity: 0, transform: 'translate(-50%, 10px)' }, { opacity: 1, offset: 0.2 }, { opacity: 0, transform: 'translate(-50%, -50px)' }], { duration: 1600, fill: 'forwards' });
-            tone(1568, 0.12, { gain: 0.08 });
-            tone(2093, 0.18, { gain: 0.08, at: 0.08 });
-
-            item.addEventListener('click', () => {
-                tone(500, 0.12, { type: 'sine', gain: 0.15, slide: 1100 });
-                item.animate([{ transform: 'none', opacity: 1 }, { transform: 'translateY(-80px) scale(.2)', opacity: 0 }], { duration: 300, easing: 'ease-in' }).onfinish = () => {
-                    item.remove();
-                    xp.remove();
-                    if (logo) {
-                        logo.style.display = '';
-                        logo.animate([{ transform: 'scale(.6)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 400, easing: 'cubic-bezier(.2,1.4,.4,1)' });
-                    }
-                    toast(L('Block collected. 1 / 64', 'Blok sebrán. 1 / 64'));
-                    active.delete('mc');
-                };
-            });
+            // Back to normal: the logo returns
+            setTimeout(() => {
+                if (logo) {
+                    logo.style.display = '';
+                    logo.animate([{ transform: 'scale(.6)', opacity: 0 }, { transform: 'none', opacity: 1 }], { duration: 400, easing: 'cubic-bezier(.2,1.4,.4,1)' });
+                }
+                active.delete('mc');
+            }, 700);
         }
         return true;
     }
@@ -507,7 +558,7 @@
             if (kind === 'door') {
                 const door = el('div', 'egg-door', '<div class="egg-fig"><b></b><b></b></div>');
                 car.appendChild(door);
-                const tag = el('div', 'egg-tag', 'OK');
+                const tag = el('div', 'egg-tag', 'EFN');
                 tag.style.right = '110px';
                 car.appendChild(tag);
             } else {
@@ -559,7 +610,7 @@
         const run = trainEl.animate([
             { transform: `translateX(${from}px)` },
             { transform: `translateX(${to}px)` }
-        ], { duration: DURATION * 1000, delay: 1100, easing: 'cubic-bezier(.3,0,.7,1)', fill: 'forwards' });
+        ], { duration: DURATION * 1000, delay: 1100, easing: 'cubic-bezier(.3,0,.7,1)', fill: 'both' });
 
         const fig = night.querySelector('.egg-fig');
         const lookTimer = setTimeout(() => { if (fig) fig.classList.add('look'); }, 1100 + DURATION * 1000 * 0.62);
@@ -792,32 +843,40 @@
             logo.parentElement.appendChild(bubble);
             tone(660, 0.1, { type: 'square', gain: 0.04, filter: 1500 });
             tone(880, 0.12, { type: 'square', gain: 0.04, filter: 1500, at: 0.1 });
-            // Hop three times and wave
-            logo.animate([
-                { transform: 'translateY(0)' },
-                { transform: 'translateY(-26px)', easing: 'ease-in' },
-                { transform: 'translateY(0)' }
-            ], { duration: 380, iterations: 3, easing: 'ease-out' });
-            const arms = logo.querySelector('.g-arms');
-            if (arms) {
-                arms.animate([
-                    { transform: 'rotate(0)' },
-                    { transform: 'rotate(-14deg)' },
-                    { transform: 'rotate(14deg)' },
-                    { transform: 'rotate(0)' }
-                ], { duration: 520, iterations: 4, delay: 300 });
-            }
-            logo.querySelectorAll('.g-leg').forEach((leg, i) => {
-                leg.animate([
-                    { transform: 'rotate(0)' },
-                    { transform: `rotate(${i ? -10 : 10}deg)` },
-                    { transform: 'rotate(0)' }
-                ], { duration: 380, iterations: 3 });
-            });
+            // Tip the OK on its side: it stands up as the OK guy, hops and waves
+            logo.classList.add('is-guy');
+            bubble.style.opacity = '0';
+            setTimeout(() => guyDance(bubble), 650);
             setTimeout(() => {
                 bubble.remove();
-                active.delete('guy');
-            }, 3600);
+                logo.classList.remove('is-guy');
+                setTimeout(() => active.delete('guy'), 600);
+            }, 4300);
+        });
+    }
+
+    function guyDance(bubble) {
+        bubble.style.opacity = '1';
+        logo.animate([
+            { transform: 'translateY(0)' },
+            { transform: 'translateY(-26px)', easing: 'ease-in' },
+            { transform: 'translateY(0)' }
+        ], { duration: 380, iterations: 3, easing: 'ease-out' });
+        const arms = logo.querySelector('.g-arms');
+        if (arms) {
+            arms.animate([
+                { transform: 'rotate(0)' },
+                { transform: 'rotate(-14deg)' },
+                { transform: 'rotate(14deg)' },
+                { transform: 'rotate(0)' }
+            ], { duration: 520, iterations: 4, delay: 300 });
+        }
+        logo.querySelectorAll('.g-leg').forEach((leg, i) => {
+            leg.animate([
+                { transform: 'rotate(0)' },
+                { transform: `rotate(${i ? -10 : 10}deg)` },
+                { transform: 'rotate(0)' }
+            ], { duration: 380, iterations: 3 });
         });
     }
 

@@ -201,32 +201,79 @@
                 ctx.fillText(b.v, b.c * GAP + GAP / 2 - 3, b.r * GAP + GAP / 2 + 3);
             });
             ctx.globalAlpha = 1;
-            // Packets: each one crosses the whole canvas once, then it is gone
-            packets.forEach((p) => {
-                const tail = GAP * 2;
-                ctx.fillStyle = COLORS.mid;
-                if (p.dx) ctx.fillRect(p.dx > 0 ? p.x - tail : p.x, p.y - 1, tail, 2);
-                else ctx.fillRect(p.x - 1, p.dy > 0 ? p.y - tail : p.y, 2, tail);
-                ctx.fillStyle = COLORS.hot;
-                ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
-            });
+            // Packets: little snakes that run along the grid, turn at the dots
+            // and leave through the far edge of the screen
+            packets.forEach(drawPacket);
         };
 
         const MAX_PACKETS = 4;
-        const CROSS_SECONDS = 5;
+        const px = (c) => c * GAP + GAP / 2;
+
+        function packetHead(p) {
+            const [hx, hy] = p.pts[p.pts.length - 1];
+            return [hx + p.dir[0] * p.t, hy + p.dir[1] * p.t];
+        }
+
+        function drawPacket(p) {
+            const pts = [...p.pts.slice(-p.len), packetHead(p)];
+            ctx.lineWidth = 2;
+            ctx.lineCap = 'square';
+            for (let i = 1; i < pts.length; i++) {
+                ctx.globalAlpha = (i / pts.length) * 0.9;
+                ctx.strokeStyle = i > pts.length - 3 ? COLORS.hot : COLORS.mid;
+                ctx.beginPath();
+                ctx.moveTo(px(pts[i - 1][0]), px(pts[i - 1][1]));
+                ctx.lineTo(px(pts[i][0]), px(pts[i][1]));
+                ctx.stroke();
+            }
+            const [hx, hy] = pts[pts.length - 1];
+            ctx.globalAlpha = 0.25;
+            ctx.fillStyle = COLORS.hot;
+            ctx.fillRect(px(hx) - 5, px(hy) - 5, 10, 10);
+            ctx.globalAlpha = 1;
+            ctx.fillRect(px(hx) - 2, px(hy) - 2, 4, 4);
+        }
 
         function spawnPacket() {
-            const dir = Math.floor(Math.random() * 4); // 0 right, 1 left, 2 down, 3 up
-            const horizontal = dir < 2;
-            const speed = (horizontal ? w : h) / CROSS_SECONDS;
-            const lane = (n) => Math.floor(Math.random() * n) * GAP + GAP / 2;
-            const tail = GAP * 2;
+            const main = [[1, 0], [-1, 0], [0, 1], [0, -1]][Math.floor(Math.random() * 4)];
+            const start = main[0]
+                ? [main[0] > 0 ? -1 : cols, Math.floor(Math.random() * rows)]
+                : [Math.floor(Math.random() * cols), main[1] > 0 ? -1 : rows];
             packets.push({
-                x: horizontal ? (dir === 0 ? -tail : w + tail) : lane(cols),
-                y: horizontal ? lane(rows) : (dir === 2 ? -tail : h + tail),
-                dx: horizontal ? (dir === 0 ? speed : -speed) : 0,
-                dy: horizontal ? 0 : (dir === 2 ? speed : -speed)
+                pts: [start],
+                main,
+                dir: main,
+                side: 0,
+                t: 0,
+                speed: 5 + Math.random() * 7, // dots per second
+                len: 5 + Math.floor(Math.random() * 7)
             });
+        }
+
+        function turn(p) {
+            const onMain = p.dir === p.main;
+            if (onMain && Math.random() < 0.3) {
+                // Step aside, left or right of the main direction
+                const s = Math.random() < 0.5 ? 1 : -1;
+                p.dir = [p.main[1] * s, p.main[0] * s];
+                p.side = 0;
+            } else if (!onMain && (p.side >= 3 || Math.random() < 0.45)) {
+                p.dir = p.main;
+            }
+            if (!onMain) p.side += 1;
+        }
+
+        const outside = ([c, r]) => c < -2 || r < -2 || c > cols + 1 || r > rows + 1;
+
+        function movePacket(p, dt) {
+            p.t += p.speed * dt;
+            while (p.t >= 1) {
+                p.t -= 1;
+                const [hx, hy] = p.pts[p.pts.length - 1];
+                p.pts.push([hx + p.dir[0], hy + p.dir[1]]);
+                if (p.pts.length > p.len + 2) p.pts.shift();
+                turn(p);
+            }
         }
 
         const tick = (now) => {
@@ -234,10 +281,10 @@
             if (now - last > 33) {
                 const dt = Math.min(0.1, (now - last) / 1000);
                 if (Math.random() < 0.06) bits.push({ c: Math.floor(Math.random() * cols), r: Math.floor(Math.random() * rows), v: Math.random() < 0.5 ? '0' : '1', t: now });
-                if (packets.length < MAX_PACKETS && Math.random() < 0.012) spawnPacket();
-                packets.forEach((p) => { p.x += p.dx * dt; p.y += p.dy * dt; });
-                const out = GAP * 3;
-                packets = packets.filter((p) => p.x > -out && p.x < w + out && p.y > -out && p.y < h + out);
+                if (packets.length < MAX_PACKETS && Math.random() < 0.02) spawnPacket();
+                packets.forEach((p) => movePacket(p, dt));
+                // A packet is gone only once its whole tail has left the screen
+                packets = packets.filter((p) => p.pts.length < 3 || !p.pts.slice(-p.len).every(outside));
                 draw(now);
                 last = now;
             }

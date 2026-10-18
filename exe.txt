@@ -3,7 +3,7 @@ Otevři DevTools (F12), přepni na Console a napiš: znk()
 
 2#
 Klikni někam na stránku (mimo pole) a na klávesnici napiš: minecraft
-Pak na blok drž myš (nebo mačkej Enter), dokud se nerozbije, a klikni na to, co z něj vypadne.
+Pak na blok drž levé tlačítko myši (nebo drž Enter), dokud se nerozbije. Když pustíš, začínáš znovu.
 
 3#
 Klikni někam na stránku a napiš: vlak (nebo train)
