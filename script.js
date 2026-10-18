@@ -1,7 +1,7 @@
 /* ==========================================================================
    opikula.dev: shared behaviour
-   Theme and language are first applied by a tiny inline script in <head>
-   (so there is no flash). This file adds the controls on top of that.
+   Language is first applied by a tiny inline script in <head> (so there is
+   no flash). This file adds the controls, the motion and the two small apps.
    ========================================================================== */
 (() => {
     'use strict';
@@ -12,126 +12,65 @@
     // Strings that are built by script (everything else is bilingual markup)
     const T = {
         en: {
-            toDark: 'Switch to dark mode',
-            toLight: 'Switch to light mode',
             openMenu: 'Open navigation menu',
             closeMenu: 'Close navigation menu',
             copy: 'Copy',
             copied: 'Copied',
-            copyLabel: 'Copy email address'
+            copyLabel: 'Copy email address',
+            feedEmpty: 'GitHub is not answering right now. Try again later.',
+            noDesc: 'no description',
+            away: 'Hey, come back.'
         },
         cs: {
-            toDark: 'Přepnout na tmavý režim',
-            toLight: 'Přepnout na světlý režim',
             openMenu: 'Otevřít navigační menu',
             closeMenu: 'Zavřít navigační menu',
             copy: 'Kopírovat',
             copied: 'Zkopírováno',
-            copyLabel: 'Kopírovat e-mailovou adresu'
+            copyLabel: 'Kopírovat e-mailovou adresu',
+            feedEmpty: 'GitHub teď neodpovídá. Zkuste to později.',
+            noDesc: 'bez popisu',
+            away: 'Hej, vraťte se.'
         }
     };
 
     const store = {
-        get(key) {
-            try { return localStorage.getItem(key); } catch (e) { return null; }
+        get(key, area = localStorage) {
+            try { return area.getItem(key); } catch (e) { return null; }
         },
-        set(key, value) {
-            try { localStorage.setItem(key, value); } catch (e) { /* storage can be blocked */ }
+        set(key, value, area = localStorage) {
+            try { area.setItem(key, value); } catch (e) { /* storage can be blocked */ }
         }
     };
 
     const lang = () => (root.lang === 'cs' ? 'cs' : 'en');
-    const theme = () => (root.dataset.theme === 'dark' ? 'dark' : 'light');
+    const t = (key) => T[lang()][key];
 
     // Remember the English page title / description so we can switch back to them
     const descMeta = document.querySelector('meta[name="description"]');
     root.dataset.titleEn = document.title;
     if (descMeta) descMeta.dataset.en = descMeta.content;
 
-    /* ---------- View transitions helper (same-document) ---------- */
-    let transitionId = 0;
-
-    function transition(kind, update, onReady) {
-        if (!document.startViewTransition || reduceMotion.matches) {
-            update();
-            return;
-        }
-        const id = ++transitionId;
-        root.dataset.vt = kind;
-        const vt = document.startViewTransition(update);
-        // A newer transition can skip this one; only the latest one cleans up
-        const done = () => { if (id === transitionId) delete root.dataset.vt; };
-        // Every promise of a skipped transition rejects, so each one needs a handler
-        vt.ready.then(onReady, () => {});
-        vt.updateCallbackDone.catch(() => {});
-        vt.finished.then(done, done);
-    }
-
-    /* ---------- Theme ---------- */
-    const themeButtons = document.querySelectorAll('.theme-toggle');
-
-    function renderTheme() {
-        const label = theme() === 'dark' ? T[lang()].toLight : T[lang()].toDark;
-        themeButtons.forEach((btn) => btn.setAttribute('aria-label', label));
-        const color = theme() === 'dark' ? '#0A0D26' : '#F2F3F8';
-        document.querySelectorAll('meta[name="theme-color"]').forEach((m) => { m.content = color; });
-    }
-
-    function setTheme(next, origin) {
-        const apply = () => {
-            root.dataset.theme = next;
-            store.set('theme', next);
-            renderTheme();
-        };
-        const x = origin ? origin.x : window.innerWidth / 2;
-        const y = origin ? origin.y : 0;
-        const radius = Math.hypot(Math.max(x, window.innerWidth - x), Math.max(y, window.innerHeight - y));
-
-        transition('theme', apply, () => {
-            root.animate(
-                { clipPath: [`circle(0 at ${x}px ${y}px)`, `circle(${radius}px at ${x}px ${y}px)`] },
-                { duration: 650, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)', pseudoElement: '::view-transition-new(root)' }
-            );
-        });
-    }
-
-    themeButtons.forEach((btn) => {
-        btn.addEventListener('click', () => {
-            const rect = btn.getBoundingClientRect();
-            setTheme(theme() === 'dark' ? 'light' : 'dark', {
-                x: rect.left + rect.width / 2,
-                y: rect.top + rect.height / 2
-            });
-        });
-    });
-
-    // Follow the system setting until the visitor makes a choice
-    window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (event) => {
-        if (store.get('theme')) return;
-        root.dataset.theme = event.matches ? 'dark' : 'light';
-        renderTheme();
-    });
+    const pageTitle = () => (lang() === 'cs' && root.dataset.titleCs ? root.dataset.titleCs : root.dataset.titleEn);
 
     /* ---------- Language ---------- */
     const langButtons = document.querySelectorAll('.lang button');
+    const langListeners = [];
 
     function renderLang() {
         const l = lang();
         langButtons.forEach((btn) => btn.setAttribute('aria-pressed', String(btn.dataset.lang === l)));
-        document.title = l === 'cs' && root.dataset.titleCs ? root.dataset.titleCs : root.dataset.titleEn;
+        if (!document.hidden) document.title = pageTitle();
         if (descMeta) descMeta.content = l === 'cs' && descMeta.dataset.cs ? descMeta.dataset.cs : descMeta.dataset.en;
-        renderTheme();
         renderMenuLabel();
         renderCopy();
+        langListeners.forEach((fn) => fn(l));
     }
 
     function setLang(next) {
         if (next === lang()) return;
-        transition('lang', () => {
-            root.lang = next;
-            store.set('lang', next);
-            renderLang();
-        });
+        root.lang = next;
+        store.set('lang', next);
+        renderLang();
     }
 
     langButtons.forEach((btn) => btn.addEventListener('click', () => setLang(btn.dataset.lang)));
@@ -143,7 +82,7 @@
     function renderMenuLabel() {
         if (!menuToggle) return;
         const open = menuToggle.getAttribute('aria-expanded') === 'true';
-        menuToggle.setAttribute('aria-label', open ? T[lang()].closeMenu : T[lang()].openMenu);
+        menuToggle.setAttribute('aria-label', open ? t('closeMenu') : t('openMenu'));
     }
 
     function setMenu(open) {
@@ -173,35 +112,148 @@
             }
         });
 
-        window.matchMedia('(min-width: 861px)').addEventListener('change', (event) => {
+        window.matchMedia('(min-width: 721px)').addEventListener('change', (event) => {
             if (event.matches) setMenu(false);
         });
     }
 
-    /* ---------- Headline: slide the words up once on load ---------- */
-    function splitWords(el) {
+    /* ---------- Headline: "decrypt" from 0-9 A-F on load ---------- */
+    const HEX = '0123456789ABCDEF';
+
+    function decrypt(el, duration = 1100) {
         const text = el.textContent.trim();
-        if (!text) return;
-        el.textContent = '';
-        text.split(/\s+/).forEach((word, i, words) => {
-            const outer = document.createElement('span');
-            outer.className = 'w';
-            const inner = document.createElement('span');
-            inner.style.setProperty('--i', i);
-            inner.textContent = word;
-            outer.appendChild(inner);
-            el.appendChild(outer);
-            if (i < words.length - 1) el.appendChild(document.createTextNode(' '));
-        });
-        el.classList.add('is-split');
+        if (!text || reduceMotion.matches) return;
+        el.setAttribute('aria-label', text);
+        const start = performance.now();
+        const order = [...text].map((_, i) => i / text.length * 0.7 + Math.random() * 0.3);
+
+        el.classList.add('decrypt');
+        const frame = (now) => {
+            const p = Math.min(1, (now - start) / duration);
+            let html = '';
+            [...text].forEach((ch, i) => {
+                if (ch === ' ' || p >= order[i]) html += ch === '<' ? '&lt;' : ch;
+                else html += `<span class="d-char">${HEX[Math.floor(Math.random() * 16)]}</span>`;
+            });
+            el.innerHTML = html;
+            if (p < 1) requestAnimationFrame(frame);
+            else { el.textContent = text; el.classList.remove('decrypt'); }
+        };
+        requestAnimationFrame(frame);
     }
 
-    if (!reduceMotion.matches) {
-        document.querySelectorAll('[data-split] > [lang]').forEach(splitWords);
-        // The slide-up is for the first load only, not for every language switch
-        document.querySelectorAll('[data-split]').forEach((heading) => {
-            setTimeout(() => heading.classList.add('split-done'), 2400);
-        });
+    document.querySelectorAll('[data-decrypt]').forEach((el) => decrypt(el));
+    document.querySelectorAll('[data-decrypt-lang] > [lang]').forEach((el) => decrypt(el));
+
+    /* ---------- Background: dot grid, blinking bits, packets, warm cursor ---------- */
+    const canvas = document.querySelector('.grid-bg');
+
+    if (canvas && canvas.getContext) {
+        const ctx = canvas.getContext('2d');
+        const GAP = 24;
+        const COLORS = { dim: '#2e1418', mid: '#7a1424', hot: '#ff5468' };
+        let w = 0, h = 0, dpr = 1, cols = 0, rows = 0;
+        let mouse = { x: -9999, y: -9999 };
+        let bits = [];
+        let packets = [];
+        let last = 0;
+        let running = false;
+
+        const resize = () => {
+            dpr = Math.min(window.devicePixelRatio || 1, 2);
+            w = window.innerWidth;
+            h = window.innerHeight;
+            canvas.width = w * dpr;
+            canvas.height = h * dpr;
+            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+            cols = Math.ceil(w / GAP) + 1;
+            rows = Math.ceil(h / GAP) + 1;
+            draw(performance.now());
+        };
+
+        const draw = (now) => {
+            ctx.clearRect(0, 0, w, h);
+            for (let r = 0; r < rows; r++) {
+                for (let c = 0; c < cols; c++) {
+                    const x = c * GAP + GAP / 2;
+                    const y = r * GAP + GAP / 2;
+                    const d = Math.hypot(x - mouse.x, y - mouse.y);
+                    if (d < 140) {
+                        ctx.fillStyle = d < 60 ? COLORS.hot : COLORS.mid;
+                        ctx.globalAlpha = 1 - d / 160;
+                        ctx.fillRect(x - 1, y - 1, 2, 2);
+                        ctx.globalAlpha = 1;
+                    } else {
+                        ctx.fillStyle = COLORS.dim;
+                        ctx.fillRect(x - 1, y - 1, 2, 2);
+                    }
+                }
+            }
+            // Blinking bits
+            bits = bits.filter((b) => now - b.t < 900);
+            bits.forEach((b) => {
+                const a = 1 - (now - b.t) / 900;
+                ctx.globalAlpha = a;
+                ctx.fillStyle = COLORS.hot;
+                ctx.font = '10px "Cascadia Code", monospace';
+                ctx.fillText(b.v, b.c * GAP + GAP / 2 - 3, b.r * GAP + GAP / 2 + 3);
+            });
+            ctx.globalAlpha = 1;
+            // Packets running along a row
+            packets = packets.filter((p) => p.c < p.end);
+            packets.forEach((p) => {
+                const x = p.c * GAP + GAP / 2;
+                const y = p.r * GAP + GAP / 2;
+                ctx.fillStyle = COLORS.mid;
+                ctx.fillRect(x - GAP * 2, y - 1, GAP * 2, 2);
+                ctx.fillStyle = COLORS.hot;
+                ctx.fillRect(x - 2, y - 2, 4, 4);
+            });
+        };
+
+        const tick = (now) => {
+            if (!running) return;
+            if (now - last > 33) {
+                if (Math.random() < 0.06) bits.push({ c: Math.floor(Math.random() * cols), r: Math.floor(Math.random() * rows), v: Math.random() < 0.5 ? '0' : '1', t: now });
+                if (Math.random() < 0.008 && packets.length < 3) {
+                    const start = Math.floor(Math.random() * cols * 0.5);
+                    packets.push({ r: Math.floor(Math.random() * rows), c: start, end: start + 8 + Math.floor(Math.random() * 20) });
+                }
+                packets.forEach((p) => { p.c += 0.5; });
+                draw(now);
+                last = now;
+            }
+            requestAnimationFrame(tick);
+        };
+
+        const start = () => {
+            if (running || reduceMotion.matches || document.hidden) return;
+            running = true;
+            requestAnimationFrame(tick);
+        };
+
+        window.addEventListener('resize', resize);
+        window.addEventListener('pointermove', (event) => { mouse = { x: event.clientX, y: event.clientY }; }, { passive: true });
+        document.addEventListener('pointerleave', () => { mouse = { x: -9999, y: -9999 }; });
+        document.addEventListener('visibilitychange', () => { if (document.hidden) running = false; else start(); });
+        reduceMotion.addEventListener('change', () => { running = false; start(); draw(performance.now()); });
+        resize();
+        start();
+    }
+
+    /* ---------- Sections slide up once ---------- */
+    const reveals = document.querySelectorAll('.reveal');
+    if ('IntersectionObserver' in window) {
+        const io = new IntersectionObserver((entries) => {
+            entries.forEach((entry) => {
+                if (!entry.isIntersecting) return;
+                entry.target.classList.add('is-in');
+                io.unobserve(entry.target);
+            });
+        }, { rootMargin: '0px 0px -10% 0px' });
+        reveals.forEach((el) => io.observe(el));
+    } else {
+        reveals.forEach((el) => el.classList.add('is-in'));
     }
 
     /* ---------- Copy e-mail address ---------- */
@@ -211,8 +263,8 @@
     function renderCopy() {
         copyButtons.forEach((btn) => {
             const copied = btn.classList.contains('is-copied');
-            btn.textContent = copied ? T[lang()].copied : T[lang()].copy;
-            btn.setAttribute('aria-label', copied ? T[lang()].copied : T[lang()].copyLabel);
+            btn.textContent = copied ? t('copied') : t('copy');
+            btn.setAttribute('aria-label', copied ? t('copied') : t('copyLabel'));
         });
     }
 
@@ -247,7 +299,7 @@
         });
     });
 
-    /* ---------- Age: worked out from the birth date, so it never goes stale ---------- */
+    /* ---------- Age and year: worked out from today, so they never go stale ---------- */
     const BIRTH = { year: 2009, month: 6, day: 28 };
 
     function currentAge(today = new Date()) {
@@ -259,29 +311,241 @@
     }
 
     document.querySelectorAll('[data-age]').forEach((el) => { el.textContent = currentAge(); });
+    document.querySelectorAll('[data-year]').forEach((el) => { el.textContent = new Date().getFullYear(); });
 
-    /* ---------- Logo easter egg: click it three times ---------- */
-    const logo = document.getElementById('brand-logo');
+    /* ---------- Tab title when the visitor leaves ---------- */
+    document.addEventListener('visibilitychange', () => {
+        document.title = document.hidden ? t('away') : pageTitle();
+    });
 
-    if (logo) {
-        let clicks = 0;
-        let resetTimer;
-        logo.addEventListener('click', () => {
-            clicks += 1;
-            clearTimeout(resetTimer);
-            resetTimer = setTimeout(() => { clicks = 0; }, 800);
-            if (clicks >= 3) {
-                clicks = 0;
-                logo.classList.add('spin-fast');
-                setTimeout(() => logo.classList.remove('spin-fast'), 2000);
+    /* ---------- App: terminal ---------- */
+    const term = document.getElementById('term');
+    const termOut = document.getElementById('term-out');
+    const termForm = document.getElementById('term-form');
+    const termInput = document.getElementById('term-input');
+
+    const egg = (name, ...args) => (window.OKeggs && window.OKeggs[name] ? window.OKeggs[name](...args) : false);
+
+    function print(text, cls) {
+        const p = document.createElement('p');
+        if (cls) p.className = cls;
+        p.textContent = text;
+        termOut.appendChild(p);
+        termOut.scrollTop = termOut.scrollHeight;
+        return p;
+    }
+
+    function printLink(label, href) {
+        const p = document.createElement('p');
+        const a = document.createElement('a');
+        a.href = href;
+        a.textContent = label;
+        if (/^https?:/.test(href)) { a.target = '_blank'; a.rel = 'noopener'; }
+        p.appendChild(a);
+        termOut.appendChild(p);
+        termOut.scrollTop = termOut.scrollHeight;
+    }
+
+    const L = (en, cs) => (lang() === 'cs' ? cs : en);
+
+    const COMMANDS = {
+        help() {
+            print(L('Commands:', 'Příkazy:'), 't-muted');
+            [
+                ['about', L('who I am', 'kdo jsem')],
+                ['kontakt', L('how to reach me', 'jak mě zastihnout')],
+                ['store', L('open store.opikula.dev', 'otevřít store.opikula.dev')],
+                ['github', L('open my GitHub', 'otevřít můj GitHub')],
+                ['datum', L('today\'s date', 'dnešní datum')],
+                ['clear', L('clear the screen', 'vyčistit obrazovku')]
+            ].forEach(([cmd, desc]) => print(`  ${cmd.padEnd(9)}${desc}`));
+        },
+        about() {
+            print(L(`Samuel Pelc, ${currentAge()}, IT student from Varnsdorf. Into C#, games and anime.`,
+                `Samuel Pelc, ${currentAge()}, student IT z Varnsdorfu. Baví ho C#, hry a anime.`));
+            const target = document.getElementById('o-mne');
+            if (target) target.scrollIntoView({ behavior: reduceMotion.matches ? 'auto' : 'smooth' });
+        },
+        kontakt() {
+            printLink('pelcsamuel464@gmail.com', 'mailto:pelcsamuel464@gmail.com');
+            printLink('github.com/OpiKula2877', 'https://github.com/OpiKula2877');
+            printLink('youtube.com/@OpiKula', 'https://www.youtube.com/@OpiKula');
+        },
+        store() {
+            print(L('Opening the store in a new tab...', 'Otevírám store v nové kartě...'), 't-ok');
+            window.open('https://store.opikula.dev/', '_blank', 'noopener');
+        },
+        github() {
+            print(L('Opening GitHub in a new tab...', 'Otevírám GitHub v nové kartě...'), 't-ok');
+            window.open('https://github.com/OpiKula2877', '_blank', 'noopener');
+        },
+        datum() {
+            print(new Date().toLocaleString(lang() === 'cs' ? 'cs-CZ' : 'en-GB', { dateStyle: 'full', timeStyle: 'short' }));
+        },
+        clear() { termOut.textContent = ''; },
+        whoami() { print(L('guest. but a curious one.', 'host. ale zvědavý.')); },
+        ls() { print('about.txt  kontakt.txt  .tajne/', 't-muted'); },
+        cd(arg) {
+            if (/tajne/.test(arg)) print(L('Permission denied. Nice try though.', 'Přístup odepřen. Ale dobrý pokus.'), 't-err');
+            else print(L(`cd: ${arg || '~'}: there is nowhere to go`, `cd: ${arg || '~'}: není kam jít`), 't-muted');
+        },
+        cat(arg) {
+            if (/about/.test(arg)) COMMANDS.about();
+            else if (/kontakt/.test(arg)) COMMANDS.kontakt();
+            else if (/tajne/.test(arg)) print(L('cat: .tajne: it is a directory. and it is locked.', 'cat: .tajne: je to složka. a je zamčená.'), 't-err');
+            else print(L('meow.', 'mňau.'));
+        },
+        echo(arg) { print(arg); },
+        ok() { print('OK.', 't-ok'); },
+        exit() {
+            print(L('There is no exit.', 'Odsud se neodchází.'), 't-hot');
+            setTimeout(() => print(L('...just kidding. Close the tab like a normal person.', '...dělám si srandu. Zavřete kartu jako normální člověk.'), 't-muted'), 1200);
+        },
+        sudo(arg) {
+            if (/rm\s+-rf/.test(arg)) {
+                if (!egg('meltdown')) print(L('Nice try.', 'Pěkný pokus.'), 't-err');
+            } else {
+                print(L('samuel is not in the sudoers file. This incident will be reported.', 'samuel není v souboru sudoers. Tento incident bude nahlášen.'), 't-err');
+            }
+        },
+        vlak() { print(L('Do you hear that?', 'Slyšíte to?'), 't-hot'); egg('train'); },
+        poker() { print(L('Shuffling...', 'Míchám...'), 't-ok'); egg('poker'); },
+        minecraft() { print(L('Loading chunks...', 'Načítám chunky...'), 't-ok'); egg('minecraft'); },
+        znk() { egg('znk'); print('o/', 't-hot'); },
+        matrix() { egg('matrix'); print(L('Wake up, Samuel...', 'Probuď se, Samueli...'), 't-ok'); },
+        hack() { egg('matrix'); print(L('ACCESS GRANTED (to absolutely nothing)', 'PŘÍSTUP POVOLEN (k ničemu)'), 't-ok'); }
+    };
+
+    // Aliases
+    Object.assign(COMMANDS, {
+        contact: COMMANDS.kontakt,
+        date: COMMANDS.datum,
+        cls: COMMANDS.clear,
+        dir: COMMANDS.ls,
+        train: COMMANDS.vlak,
+        allin: COMMANDS.poker,
+        'o-mne': COMMANDS.about
+    });
+
+    if (term && termForm && termInput) {
+        const history = [];
+        let historyIndex = 0;
+
+        print(L('OK terminal v1.0', 'OK terminál v1.0'), 't-muted');
+        print(L('Type "help" to see what it can do.', 'Napište "help" a uvidíte, co umí.'), 't-muted');
+
+        term.addEventListener('click', () => {
+            if (!window.getSelection().toString()) termInput.focus({ preventScroll: true });
+        });
+
+        termForm.addEventListener('submit', (event) => {
+            event.preventDefault();
+            const raw = termInput.value.trim();
+            termInput.value = '';
+            if (!raw) return;
+            history.push(raw);
+            historyIndex = history.length;
+            print(`$ ${raw}`, 't-muted');
+            const [name, ...rest] = raw.split(/\s+/);
+            const cmd = COMMANDS[name.toLowerCase()];
+            if (cmd && Object.prototype.hasOwnProperty.call(COMMANDS, name.toLowerCase())) cmd(rest.join(' '));
+            else print(L(`${name}: command not found`, `${name}: příkaz nenalezen`), 't-err');
+        });
+
+        termInput.addEventListener('keydown', (event) => {
+            if (event.key === 'ArrowUp' && historyIndex > 0) {
+                historyIndex -= 1;
+                termInput.value = history[historyIndex];
+                event.preventDefault();
+            } else if (event.key === 'ArrowDown') {
+                historyIndex = Math.min(history.length, historyIndex + 1);
+                termInput.value = history[historyIndex] || '';
+                event.preventDefault();
             }
         });
     }
 
-    console.log('%cHi there', 'color: #2F3DF5; font-size: 20px; font-weight: bold;');
+    /* ---------- App: latest GitHub pushes ---------- */
+    const feed = document.getElementById('feed');
+    let repos = null;
 
-    /* ---------- Page leave fade (browsers without view transitions) ---------- */
-    if (!root.classList.contains('vt') && !reduceMotion.matches) {
+    function timeAgo(date) {
+        const rtf = new Intl.RelativeTimeFormat(lang() === 'cs' ? 'cs' : 'en', { numeric: 'auto' });
+        const sec = (date - Date.now()) / 1000;
+        const steps = [['year', 31536000], ['month', 2592000], ['week', 604800], ['day', 86400], ['hour', 3600], ['minute', 60]];
+        for (const [unit, size] of steps) {
+            if (Math.abs(sec) >= size) return rtf.format(Math.round(sec / size), unit);
+        }
+        return rtf.format(Math.round(sec), 'second');
+    }
+
+    function renderFeed() {
+        if (!feed) return;
+        feed.textContent = '';
+        feed.setAttribute('aria-busy', 'false');
+        if (!repos || !repos.length) {
+            const li = document.createElement('li');
+            li.className = 'small';
+            li.textContent = t('feedEmpty');
+            feed.appendChild(li);
+            return;
+        }
+        repos.forEach((repo) => {
+            const li = document.createElement('li');
+            const a = document.createElement('a');
+            a.href = repo.url;
+            a.target = '_blank';
+            a.rel = 'noopener';
+            a.textContent = repo.name;
+            const desc = document.createElement('span');
+            desc.className = 'small';
+            desc.textContent = repo.desc || t('noDesc');
+            const meta = document.createElement('span');
+            meta.className = 'meta';
+            if (repo.lang) {
+                const l = document.createElement('span');
+                const dot = document.createElement('span');
+                dot.className = 'dot';
+                dot.setAttribute('aria-hidden', 'true');
+                l.append(dot, repo.lang);
+                meta.appendChild(l);
+            }
+            const when = document.createElement('span');
+            when.textContent = timeAgo(new Date(repo.pushed));
+            meta.appendChild(when);
+            li.append(a, desc, meta);
+            feed.appendChild(li);
+        });
+    }
+
+    async function loadFeed() {
+        if (!feed) return;
+        const cached = store.get('gh-feed', sessionStorage);
+        if (cached) {
+            try {
+                const data = JSON.parse(cached);
+                if (Date.now() - data.at < 10 * 60 * 1000) { repos = data.repos; renderFeed(); return; }
+            } catch (e) { /* refetch */ }
+        }
+        try {
+            const res = await fetch('https://api.github.com/users/OpiKula2877/repos?sort=pushed&per_page=12', { headers: { Accept: 'application/vnd.github+json' } });
+            if (!res.ok) throw new Error(res.status);
+            const list = await res.json();
+            repos = list.filter((r) => !r.fork).slice(0, 4).map((r) => ({
+                name: r.name, url: r.html_url, desc: r.description, lang: r.language, pushed: r.pushed_at
+            }));
+            store.set('gh-feed', JSON.stringify({ at: Date.now(), repos }), sessionStorage);
+        } catch (e) {
+            repos = null;
+        }
+        renderFeed();
+    }
+
+    loadFeed();
+    langListeners.push(() => { if (repos) renderFeed(); });
+
+    /* ---------- Page leave fade ---------- */
+    if (!reduceMotion.matches) {
         document.addEventListener('click', (event) => {
             const link = event.target.closest('a[href]');
             if (!link || event.defaultPrevented || event.button !== 0) return;
@@ -301,6 +565,9 @@
             if (event.persisted) root.classList.remove('is-leaving');
         });
     }
+
+    // Shared bits the easter eggs use
+    window.OKsite = { lang, reduceMotion, onLang: (fn) => langListeners.push(fn) };
 
     renderLang();
 })();
