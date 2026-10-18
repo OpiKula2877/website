@@ -114,7 +114,6 @@
 
 .egg-matrix{position:fixed;inset:0;z-index:9996;width:100%;height:100%;cursor:pointer;transition:opacity .8s}
 
-.ok-guy{transform:rotate(90deg)!important}
 .ok-bubble{position:absolute;left:50%;top:-18px;transform:translate(-50%,-100%);padding:8px 14px;background:#170d0e;border:1px solid #4a1218;border-radius:10px;color:#f2e6e6;font:700 15px/1.2 "Cascadia Code",monospace;white-space:nowrap;pointer-events:none}
 .ok-bubble::after{content:"";position:absolute;left:50%;bottom:-7px;width:12px;height:12px;margin-left:-6px;background:#170d0e;border:solid #4a1218;border-width:0 1px 1px 0;transform:rotate(45deg)}
 .leet{color:#ff5468}
@@ -788,22 +787,35 @@
             if (clicks < 3 || active.has('guy')) return;
             clicks = 0;
             active.add('guy');
-            logo.classList.add('ok-guy');
             const bubble = el('div', 'ok-bubble');
             bubble.textContent = L('Hi! I live here.', 'Ahoj! Já tu bydlím.');
             logo.parentElement.appendChild(bubble);
             tone(660, 0.1, { type: 'square', gain: 0.04, filter: 1500 });
             tone(880, 0.12, { type: 'square', gain: 0.04, filter: 1500, at: 0.1 });
-            setTimeout(() => {
-                logo.animate([
-                    { transform: 'rotate(90deg) translateX(0)' },
-                    { transform: 'rotate(90deg) translateX(-26px)' },
-                    { transform: 'rotate(90deg) translateX(0)' }
-                ], { duration: 360, iterations: 3, easing: 'ease-out' });
-            }, 550);
+            // Hop three times and wave
+            logo.animate([
+                { transform: 'translateY(0)' },
+                { transform: 'translateY(-26px)', easing: 'ease-in' },
+                { transform: 'translateY(0)' }
+            ], { duration: 380, iterations: 3, easing: 'ease-out' });
+            const arms = logo.querySelector('.g-arms');
+            if (arms) {
+                arms.animate([
+                    { transform: 'rotate(0)' },
+                    { transform: 'rotate(-14deg)' },
+                    { transform: 'rotate(14deg)' },
+                    { transform: 'rotate(0)' }
+                ], { duration: 520, iterations: 4, delay: 300 });
+            }
+            logo.querySelectorAll('.g-leg').forEach((leg, i) => {
+                leg.animate([
+                    { transform: 'rotate(0)' },
+                    { transform: `rotate(${i ? -10 : 10}deg)` },
+                    { transform: 'rotate(0)' }
+                ], { duration: 380, iterations: 3 });
+            });
             setTimeout(() => {
                 bubble.remove();
-                logo.classList.remove('ok-guy');
                 active.delete('guy');
             }, 3600);
         });
@@ -871,8 +883,6 @@
         'background:#c8102e;color:#fff;font:700 28px "Cascadia Code",monospace;padding:4px 12px;border-radius:6px',
         'color:#a88a8c;font:400 14px "Cascadia Code",monospace'
     );
-    console.log('%cNepiš do console: %cznk()', 'color:#f2e6e6;font:700 15px "Cascadia Code",monospace', 'color:#ff5468;font:700 15px "Cascadia Code",monospace');
-    console.log('%cDon\'t type in the console: %cznk()', 'color:#a88a8c;font:400 12px "Cascadia Code",monospace', 'color:#ff5468;font:400 12px "Cascadia Code",monospace');
 
     window.OKeggs = { znk, minecraft, train, poker, matrix, gravity, meltdown };
 })();

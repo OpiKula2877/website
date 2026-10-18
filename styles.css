@@ -130,6 +130,46 @@ input {
     color: inherit;
 }
 
+/* Scrollbars in the house red */
+html,
+.term-out {
+    scrollbar-width: thin;
+    scrollbar-color: var(--accent) var(--background);
+}
+
+.term-out {
+    scrollbar-color: var(--accent) var(--scene);
+}
+
+::-webkit-scrollbar {
+    width: 10px;
+    height: 10px;
+}
+
+::-webkit-scrollbar-track {
+    background: var(--background);
+    border-left: 1px solid var(--border);
+}
+
+::-webkit-scrollbar-thumb {
+    background: var(--accent);
+    border: 2px solid var(--background);
+    border-radius: var(--radius-xs);
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: var(--accent-hover);
+}
+
+.term-out::-webkit-scrollbar-track {
+    background: var(--scene);
+    border-left: 0;
+}
+
+.term-out::-webkit-scrollbar-thumb {
+    border-color: var(--scene);
+}
+
 ::selection {
     background: var(--accent);
     color: var(--accent-text);
@@ -520,7 +560,25 @@ html[lang="en"] [lang="cs"]:not(html) {
     cursor: pointer;
     user-select: none;
     -webkit-user-drag: none;
+    overflow: hidden;
     transition: transform 0.6s var(--ease);
+}
+
+.ok-guy-svg {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.ok-guy-svg .g-arms,
+.ok-guy-svg .g-head {
+    transform-box: fill-box;
+    transform-origin: 50% 100%;
+}
+
+.ok-guy-svg .g-leg {
+    transform-box: fill-box;
+    transform-origin: 50% 0;
 }
 
 @media (max-width: 860px) {
@@ -608,6 +666,16 @@ html[lang="en"] [lang="cs"]:not(html) {
     .apps {
         grid-template-columns: minmax(0, 1fr);
     }
+
+    /* Smaller screens get the light version: no console, no window shadows */
+    .window--console {
+        display: none;
+    }
+
+    .window,
+    .logo-big {
+        box-shadow: none;
+    }
 }
 
 .window {
@@ -660,8 +728,6 @@ html[lang="en"] [lang="cs"]:not(html) {
     flex: 1 1 auto;
     overflow-y: auto;
     padding: var(--space-16) var(--space-16) 0;
-    scrollbar-width: thin;
-    scrollbar-color: var(--border) transparent;
 }
 
 .term-out p {

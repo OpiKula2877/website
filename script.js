@@ -151,6 +151,8 @@
     if (canvas && canvas.getContext) {
         const ctx = canvas.getContext('2d');
         const GAP = 24;
+        // Phones and small screens get a still grid, so nothing runs in the background
+        const lite = window.matchMedia('(max-width: 860px), (pointer: coarse)');
         const COLORS = { dim: '#2e1418', mid: '#7a1424', hot: '#ff5468' };
         let w = 0, h = 0, dpr = 1, cols = 0, rows = 0;
         let mouse = { x: -9999, y: -9999 };
@@ -199,27 +201,43 @@
                 ctx.fillText(b.v, b.c * GAP + GAP / 2 - 3, b.r * GAP + GAP / 2 + 3);
             });
             ctx.globalAlpha = 1;
-            // Packets running along a row
-            packets = packets.filter((p) => p.c < p.end);
+            // Packets: each one crosses the whole canvas once, then it is gone
             packets.forEach((p) => {
-                const x = p.c * GAP + GAP / 2;
-                const y = p.r * GAP + GAP / 2;
+                const tail = GAP * 2;
                 ctx.fillStyle = COLORS.mid;
-                ctx.fillRect(x - GAP * 2, y - 1, GAP * 2, 2);
+                if (p.dx) ctx.fillRect(p.dx > 0 ? p.x - tail : p.x, p.y - 1, tail, 2);
+                else ctx.fillRect(p.x - 1, p.dy > 0 ? p.y - tail : p.y, 2, tail);
                 ctx.fillStyle = COLORS.hot;
-                ctx.fillRect(x - 2, y - 2, 4, 4);
+                ctx.fillRect(p.x - 2, p.y - 2, 4, 4);
             });
         };
+
+        const MAX_PACKETS = 4;
+        const CROSS_SECONDS = 5;
+
+        function spawnPacket() {
+            const dir = Math.floor(Math.random() * 4); // 0 right, 1 left, 2 down, 3 up
+            const horizontal = dir < 2;
+            const speed = (horizontal ? w : h) / CROSS_SECONDS;
+            const lane = (n) => Math.floor(Math.random() * n) * GAP + GAP / 2;
+            const tail = GAP * 2;
+            packets.push({
+                x: horizontal ? (dir === 0 ? -tail : w + tail) : lane(cols),
+                y: horizontal ? lane(rows) : (dir === 2 ? -tail : h + tail),
+                dx: horizontal ? (dir === 0 ? speed : -speed) : 0,
+                dy: horizontal ? 0 : (dir === 2 ? speed : -speed)
+            });
+        }
 
         const tick = (now) => {
             if (!running) return;
             if (now - last > 33) {
+                const dt = Math.min(0.1, (now - last) / 1000);
                 if (Math.random() < 0.06) bits.push({ c: Math.floor(Math.random() * cols), r: Math.floor(Math.random() * rows), v: Math.random() < 0.5 ? '0' : '1', t: now });
-                if (Math.random() < 0.008 && packets.length < 3) {
-                    const start = Math.floor(Math.random() * cols * 0.5);
-                    packets.push({ r: Math.floor(Math.random() * rows), c: start, end: start + 8 + Math.floor(Math.random() * 20) });
-                }
-                packets.forEach((p) => { p.c += 0.5; });
+                if (packets.length < MAX_PACKETS && Math.random() < 0.012) spawnPacket();
+                packets.forEach((p) => { p.x += p.dx * dt; p.y += p.dy * dt; });
+                const out = GAP * 3;
+                packets = packets.filter((p) => p.x > -out && p.x < w + out && p.y > -out && p.y < h + out);
                 draw(now);
                 last = now;
             }
@@ -227,7 +245,8 @@
         };
 
         const start = () => {
-            if (running || reduceMotion.matches || document.hidden) return;
+            if (running || reduceMotion.matches || lite.matches || document.hidden) return;
+            last = performance.now();
             running = true;
             requestAnimationFrame(tick);
         };
@@ -236,7 +255,9 @@
         window.addEventListener('pointermove', (event) => { mouse = { x: event.clientX, y: event.clientY }; }, { passive: true });
         document.addEventListener('pointerleave', () => { mouse = { x: -9999, y: -9999 }; });
         document.addEventListener('visibilitychange', () => { if (document.hidden) running = false; else start(); });
-        reduceMotion.addEventListener('change', () => { running = false; start(); draw(performance.now()); });
+        const restart = () => { running = false; packets = []; start(); draw(performance.now()); };
+        reduceMotion.addEventListener('change', restart);
+        lite.addEventListener('change', restart);
         resize();
         start();
     }
@@ -431,8 +452,7 @@
         const history = [];
         let historyIndex = 0;
 
-        print(L('OK terminal v1.0', 'OK terminál v1.0'), 't-muted');
-        print(L('Type "help" to see what it can do.', 'Napište "help" a uvidíte, co umí.'), 't-muted');
+        print(L('To list the commands, type "help".', 'Pro vypsání příkazů napište "help".'), 't-muted');
 
         term.addEventListener('click', () => {
             if (!window.getSelection().toString()) termInput.focus({ preventScroll: true });

@@ -1,0 +1,40 @@
+1#
+Otevři DevTools (F12), přepni na Console a napiš: znk()
+
+2#
+Klikni někam na stránku (mimo pole) a na klávesnici napiš: minecraft
+Pak na blok drž myš (nebo mačkej Enter), dokud se nerozbije, a klikni na to, co z něj vypadne.
+
+3#
+Klikni někam na stránku a napiš: vlak (nebo train)
+Případně stačí otevřít web mezi půlnocí a 4:00 a 20 s počkat. Občas (1 %) přijede i sám.
+
+4#
+Klikni někam na stránku a napiš: poker (nebo allin)
+
+5#
+Konami kód: ↑ ↑ ↓ ↓ ← → ← → B A
+
+6#
+Na stránce Domů klikni 3× rychle za sebou na velké logo s panáčkem.
+
+7#
+Dvakrát klikni na rok v patičce (© 2026).
+
+8#
+Přepni se na jinou kartu prohlížeče a podívej se na název karty webu.
+
+9#
+V konzoli na stránce Domů napiš: sudo rm -rf /
+
+10#
+V konzoli na stránce Domů napiš: matrix (nebo hack)
+
+11#
+V konzoli na stránce Domů napiš: exit
+
+12#
+V konzoli na stránce Domů napiš: ls a pak cd .tajne (nebo cat .tajne)
+
+13#
+V konzoli na stránce Domů napiš: whoami, ok, echo něco, cat cokoli

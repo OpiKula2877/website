@@ -103,8 +103,8 @@
                 <p class="kicker"><span lang="en">IT student · Varnsdorf</span><span lang="cs">Student IT · Varnsdorf</span></p>
                 <h1 class="display" data-decrypt>Samuel Pelc</h1>
                 <p class="lede">
-                    <span lang="en">I'm <span data-age>17</span>, I study IT and I build small apps, websites and things that probably shouldn't exist.</span>
-                    <span lang="cs">Je mi <span data-age>17</span>, studuji IT a dělám malé aplikace, weby a věci, které by asi existovat neměly.</span>
+                    <span lang="en">I'm <span data-age>17</span>, I study IT and I build small apps, websites and things.</span>
+                    <span lang="cs">Je mi <span data-age>17</span>, studuji IT a dělám malé aplikace, weby a věci.</span>
                 </p>
                 <div class="hero-actions">
                     <a class="btn" href="contact.html"><span lang="en">Get in touch</span><span lang="cs">Napište mi</span></a>
@@ -115,7 +115,20 @@
                 </div>
             </div>
             <div class="hero-mark">
-                <img class="logo-big" id="brand-logo" src="assets/logo-512.png" width="240" height="240" alt="" draggable="false">
+                <div class="logo-big" id="brand-logo">
+                    <svg class="ok-guy-svg" viewBox="0 0 240 240" aria-hidden="true" focusable="false">
+                        <rect width="240" height="240" rx="44" fill="#000"/>
+                        <g fill="#fff">
+                            <!-- O: the head -->
+                            <path class="g-head" fill-rule="evenodd" d="M120 30a42 42 0 1 1 0 84a42 42 0 1 1 0-84zm0 16a26 26 0 1 0 0 52a26 26 0 1 0 0-52z"/>
+                            <!-- K stem: shoulders and arms -->
+                            <rect class="g-arms" x="58" y="114" width="124" height="15"/>
+                            <!-- K diagonals: legs -->
+                            <path class="g-leg g-leg-l" d="M112 129h16L92 206H74z"/>
+                            <path class="g-leg g-leg-r" d="M112 129h16l38 77h-18z"/>
+                        </g>
+                    </svg>
+                </div>
             </div>
         </section>
 
@@ -154,19 +167,18 @@
         <section class="wrap section reveal" aria-labelledby="apps-title">
             <div class="section-head">
                 <h2 class="title" id="apps-title"><span lang="en">Desk</span><span lang="cs">Plocha</span></h2>
-                <p class="small"><span lang="en">Two small apps. Try typing <b>help</b>.</span><span lang="cs">Dvě malé aplikace. Zkus napsat <b>help</b>.</span></p>
             </div>
             <div class="apps">
-                <div class="window">
+                <div class="window window--console">
                     <div class="window-bar">
                         <img src="assets/logo-96.png" width="16" height="16" alt="">
-                        <span>terminal.exe</span>
+                        <span>console</span>
                         <span class="window-btns" aria-hidden="true"><span>–</span><span>□</span><span>×</span></span>
                     </div>
                     <div class="term" id="term">
                         <div class="term-out" id="term-out" aria-live="polite"></div>
                         <form class="term-form" id="term-form" autocomplete="off">
-                            <label class="prompt" for="term-input">samuel@opikula<b>:~$</b></label>
+                            <label class="prompt" for="term-input">OpiKula</label>
                             <input class="term-input" id="term-input" type="text" spellcheck="false" autocapitalize="off" enterkeyhint="send">
                         </form>
                     </div>
