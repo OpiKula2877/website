@@ -42,9 +42,9 @@
     <link rel="icon" href="favicon.ico" sizes="any">
     <link rel="apple-touch-icon" href="assets/logo-192.png">
     <link rel="preload" href="assets/fonts/CascadiaCode.ttf" as="font" type="font/ttf" crossorigin>
-    <link rel="stylesheet" href="styles.css?v=4">
-    <script src="script.js?v=4" defer></script>
-    <script src="eggs.js?v=4" defer></script>
+    <link rel="stylesheet" href="styles.css?v=5">
+    <script src="script.js?v=5" defer></script>
+    <script src="eggs.js?v=5" defer></script>
 
     <script type="application/ld+json">
     {
@@ -121,16 +121,14 @@
                         <!-- The OK mark, drawn standing up and turned on its side to read "OK".
                              Three clicks stand it up and stretch the K into arms and legs (eggs.js). -->
                         <g class="g-mark">
-                            <g class="g-body" transform="translate(0 12)">
+                            <g class="g-body" fill="#fff" transform="translate(0 10)">
                                 <!-- O: the head -->
-                                <path class="g-head" fill="#fff" fill-rule="evenodd" d="M120 30a42 42 0 1 1 0 84a42 42 0 1 1 0-84zm0 16a26 26 0 1 0 0 52a26 26 0 1 0 0-52z"/>
-                                <g stroke="#fff" stroke-width="16" fill="none">
-                                    <!-- K stem: shoulders and arms -->
-                                    <line class="g-arms" x1="78" y1="121.5" x2="162" y2="121.5" stroke-width="15"/>
-                                    <!-- K diagonals: legs -->
-                                    <line class="g-leg g-leg-l" x1="120" y1="122" x2="86" y2="186"/>
-                                    <line class="g-leg g-leg-r" x1="120" y1="122" x2="154" y2="186"/>
-                                </g>
+                                <path class="g-head" fill-rule="evenodd" d="M120 30a42 42 0 1 1 0 84a42 42 0 1 1 0-84zm0 16a26 26 0 1 0 0 52a26 26 0 1 0 0-52z"/>
+                                <!-- K stem: shoulders and arms -->
+                                <rect class="g-arms" x="78" y="114" width="84" height="15"/>
+                                <!-- K diagonals: legs -->
+                                <polygon class="g-leg g-leg-l" points="108,129 129,129 78,187 78,163"/>
+                                <polygon class="g-leg g-leg-r" points="111,129 132,129 162,163 162,187"/>
                             </g>
                         </g>
                     </svg>

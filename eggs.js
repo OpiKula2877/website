@@ -858,9 +858,20 @@
     }
 
     // 0 = the plain OK mark, 1 = the OK guy. Endpoints in the upright drawing.
+    // Legs are the K's diagonals: four corners each, in the same order in both shapes
     const SHAPES = [
-        { arms: [78, 162], legL: [86, 186], legR: [154, 186], shift: 12 },
-        { arms: [58, 182], legL: [83, 206], legR: [157, 206], shift: 0 }
+        {
+            arms: [78, 162],
+            legL: [[108, 129], [129, 129], [78, 187], [78, 163]],
+            legR: [[111, 129], [132, 129], [162, 163], [162, 187]],
+            shift: 10
+        },
+        {
+            arms: [58, 182],
+            legL: [[112, 129], [128, 129], [92, 206], [74, 206]],
+            legR: [[112, 129], [128, 129], [166, 206], [148, 206]],
+            shift: 0
+        }
     ];
     let stretchNow = 0;
 
@@ -880,12 +891,12 @@
             const t = lerp(from, target, ease(p));
             stretchNow = t;
             const [a, b] = SHAPES;
-            arms.setAttribute('x1', lerp(a.arms[0], b.arms[0], t));
-            arms.setAttribute('x2', lerp(a.arms[1], b.arms[1], t));
-            legL.setAttribute('x2', lerp(a.legL[0], b.legL[0], t));
-            legL.setAttribute('y2', lerp(a.legL[1], b.legL[1], t));
-            legR.setAttribute('x2', lerp(a.legR[0], b.legR[0], t));
-            legR.setAttribute('y2', lerp(a.legR[1], b.legR[1], t));
+            const x1 = lerp(a.arms[0], b.arms[0], t);
+            arms.setAttribute('x', x1);
+            arms.setAttribute('width', lerp(a.arms[1], b.arms[1], t) - x1);
+            const points = (from, to) => from.map((p, i) => `${lerp(p[0], to[i][0], t)},${lerp(p[1], to[i][1], t)}`).join(' ');
+            legL.setAttribute('points', points(a.legL, b.legL));
+            legR.setAttribute('points', points(a.legR, b.legR));
             body.setAttribute('transform', `translate(0 ${lerp(a.shift, b.shift, t)})`);
             if (p < 1) requestAnimationFrame(frame);
         };
